@@ -26,6 +26,9 @@ class Header extends Component {
                 <li className="nav-item">
                     <Link to={"/"} className="nav-link">Accueil</Link>
                 </li>
+                <li className="nav-item">
+                    <Link to={"/users"} className="nav-link">Utilisateurs</Link>
+                </li>
                 {this.renderAuthenticationLink()}
             </ul>
         );

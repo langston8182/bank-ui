@@ -35,7 +35,7 @@ export function signin({email, password}, history) {
         };
 
         axios(option).then(response => {
-            localStorage.setItem("token", response.data);
+            localStorage.setItem("token", response.data.access_token);
             dispatch(resetError());
             dispatch(setAuthentication(true));
         }).catch(error => {
