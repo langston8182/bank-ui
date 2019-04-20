@@ -4,10 +4,13 @@ const qs = require('qs');
 
 export const URL_AUTHENTICATION = "http://localhost:8090/auth/oauth/token";
 
-export function setAuthentication(isLoggedIn) {
+export function setAuthentication(isLoggedIn, token) {
     return {
         type: SET_AUTHANTICATION,
-        payload: isLoggedIn
+        payload: {
+            isLoggedIn: isLoggedIn,
+            token: token.access_token
+        }
     };
 }
 
@@ -37,7 +40,7 @@ export function signin({email, password}, history) {
             console.log('', response);
             console.log('---------------');
 
-            dispatch(setAuthentication(true))
+            dispatch(setAuthentication(true, response.data));
         });
     };
 }
