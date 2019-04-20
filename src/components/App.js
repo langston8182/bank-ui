@@ -5,6 +5,7 @@ import SigninForm from "../containers/signin-form";
 import Home from "./home";
 import Erreur from "../containers/error";
 import Signout from "../containers/signout"
+import Users from "../containers/users";
 
 require("../index.css");
 
@@ -19,6 +20,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route exact path="/signin" component={SigninForm} />
             <Route exact path="/signout" component={Signout} />
+            <Route exact path="/users" component={Users} />
           </Switch>
         </div>
       </div>
