@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import SigninForm from "../containers/signin-form";
 import Home from "./home";
 import Erreur from "../containers/error";
+import Signout from "../containers/signout"
 
 require("../index.css");
 
@@ -17,6 +18,7 @@ class App extends Component {
           <Switch >
             <Route exact path="/" component={Home} />
             <Route exact path="/signin" component={SigninForm} />
+            <Route exact path="/signout" component={Signout} />
           </Switch>
         </div>
       </div>
