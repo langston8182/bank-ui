@@ -7,7 +7,6 @@ import reducers from './reducers';
 import {BrowserRouter} from 'react-router-dom';
 import App from './components/App';
 
-
 const invariant = require("redux-immutable-state-invariant").default();
 
 const createStoreWithMiddleware = applyMiddleware(invariant, thunk)(createStore);
