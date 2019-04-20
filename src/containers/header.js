@@ -4,11 +4,20 @@ import {connect} from 'react-redux';
 
 class Header extends Component {
 
+    renderConnectedUser = () => {
+        if (this.props.connectedUser) {
+            const {firstName, lastName} = this.props.connectedUser;
+            return (
+                `(${firstName} ${lastName})`
+            );
+        }
+    };
+
     renderAuthenticationLink() {
         if (this.props.isLoggedIn) {
             return (
                 <li className="nav-item">
-                    <Link to={"/signout"} className="nav-link">Déconnexion</Link>
+                    <Link to={"/signout"} className="nav-link">Déconnexion {this.renderConnectedUser()}</Link>
                 </li>
             );
         } else {
@@ -39,7 +48,8 @@ const mapDispatchToProps = {};
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.authentication.isLoggedIn
+        isLoggedIn: state.authentication.isLoggedIn,
+        connectedUser: state.authentication.connectedUser
     }
 };
 

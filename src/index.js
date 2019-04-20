@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 import reducers from './reducers';
 import {BrowserRouter} from 'react-router-dom';
 import App from './components/App';
-import {setAuthentication} from "./actions";
+import {getConnectedUser, setAuthentication} from "./actions";
 
 const invariant = require("redux-immutable-state-invariant").default();
 
@@ -20,6 +20,7 @@ const store = createStoreWithMiddleware(
 const token = localStorage.getItem("token");
 if (token) {
     store.dispatch(setAuthentication(true));
+    store.dispatch(getConnectedUser());
 }
 
 ReactDOM.render(
