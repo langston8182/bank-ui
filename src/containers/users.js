@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, {Component} from "react";
+import {connect} from "react-redux";
 import {listUsers} from "../actions/users";
 import {Link} from "react-router-dom";
+import UserListItem from "../components/user-list-item";
 
 class Users extends Component {
 
@@ -10,12 +11,12 @@ class Users extends Component {
     }
 
     renderUser = (user) => {
-        const {nom, prenom, email} = user;
+        const {firstName, lastName, email} = user;
 
         return (
             <tr key={email}>
-                <td>{nom}</td>
-                <td>{prenom}</td>
+                <td>{firstName}</td>
+                <td>{lastName}</td>
                 <td>{email}</td>
             </tr>
         );
@@ -37,9 +38,9 @@ class Users extends Component {
                     </thead>
                     <tbody>
                     {
-                        this.props.users.map(user => {
-                           return this.renderUser(user);
-                        })
+                        this.props.users.map(user => (
+                            <UserListItem key={user.email} user={user} />
+                        ))
                     }
                     </tbody>
                 </table>
