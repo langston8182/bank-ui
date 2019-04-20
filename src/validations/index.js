@@ -3,3 +3,7 @@ export const validateEmail = value =>
         'Addresse email invalide' : undefined;
 
 export const validateNotEmpty = value => value ? undefined : "Champs requis";
+
+export const validateEqual = (value1, value2) => (
+    (value1 && value2 && (value1 === value2) ? undefined : "les valeurs ne sont pas identiques")
+);
