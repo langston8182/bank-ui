@@ -1,15 +1,14 @@
-import {CONNECTION, PARSE_ERROR, RESET_ERROR, SET_AUTHANTICATION} from "./action-type";
+import {CONNECTION, PARSE_ERROR, RESET_ERROR, SET_AUTHENTICATION} from "./action-type";
 import axios from 'axios';
 const qs = require('qs');
 
 export const URL_AUTHENTICATION = "http://localhost:8090/auth/oauth/token";
 
-export function setAuthentication(isLoggedIn, token) {
+export function setAuthentication(isLoggedIn) {
     return {
-        type: SET_AUTHANTICATION,
+        type: SET_AUTHENTICATION,
         payload: {
-            isLoggedIn: isLoggedIn,
-            token: token.access_token
+            isLoggedIn: isLoggedIn
         }
     };
 }
@@ -36,12 +35,20 @@ export function signin({email, password}, history) {
         };
 
         axios(option).then(response => {
+            localStorage.setItem("token", response.data);
             dispatch(resetError());
-            dispatch(setAuthentication(true, response.data));
+            dispatch(setAuthentication(true));
         }).catch(error => {
             dispatch(parseError("Identifiants incorrects"));
         });
     };
+}
+
+export function signout() {
+    return function(dispatch) {
+        dispatch(setAuthentication(false));
+        localStorage.removeItem("token");
+    }
 }
 
 export function parseError(error) {
