@@ -1,4 +1,4 @@
-import {CONNECTION, SET_AUTHANTICATION} from "./action-type";
+import {CONNECTION, PARSE_ERROR, RESET_ERROR, SET_AUTHANTICATION} from "./action-type";
 import axios from 'axios';
 const qs = require('qs');
 
@@ -36,11 +36,23 @@ export function signin({email, password}, history) {
         };
 
         axios(option).then(response => {
-            console.log('---------------');
-            console.log('', response);
-            console.log('---------------');
-
+            dispatch(resetError());
             dispatch(setAuthentication(true, response.data));
+        }).catch(error => {
+            dispatch(parseError("Identifiants incorrects"));
         });
+    };
+}
+
+export function parseError(error) {
+    return {
+        type: PARSE_ERROR,
+        payload: error
+    };
+}
+
+export function resetError() {
+    return {
+        type: RESET_ERROR
     };
 }
