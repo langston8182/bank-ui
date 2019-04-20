@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {ADD_USER, LIST_USERS} from "./action-type";
-const qs = require('qs');
 
 export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
@@ -20,6 +19,27 @@ export function listUsers() {
             });
         })
     };
+}
+
+export function deleteUser(user, history) {
+    return function(dispatch) {
+        const data = {
+            id: user.id
+        };
+        const option = {
+            method: "DELETE",
+            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs`,
+            data: data,
+            headers: {
+                "Authorization": "bearer " + localStorage.getItem("token"),
+                "content-type": "application/json"
+            }
+        };
+        axios(option).then(() => {
+            dispatch(listUsers());
+            history.push("/users");
+        });
+    }
 }
 
 export function addUser(user, history) {

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {listUsers} from "../actions/users";
+import {listUsers, deleteUser} from "../actions/users";
 import {Link} from "react-router-dom";
 import UserListItem from "../components/user-list-item";
 
@@ -10,17 +10,9 @@ class Users extends Component {
         this.props.listUsers();
     }
 
-    renderUser = (user) => {
-        const {firstName, lastName, email} = user;
-
-        return (
-            <tr key={email}>
-                <td>{firstName}</td>
-                <td>{lastName}</td>
-                <td>{email}</td>
-            </tr>
-        );
-    };
+    deleteUser(user) {
+        this.props.deleteUser(user, this.props.history);
+    }
 
     render() {
         return (
@@ -34,12 +26,13 @@ class Users extends Component {
                             <th scope="col">Nom</th>
                             <th scope="col">Prénom</th>
                             <th scope="col">Email</th>
+                            <th>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
                     {
                         this.props.users.map(user => (
-                            <UserListItem key={user.email} user={user} />
+                            <UserListItem key={user.email} user={user} deleteUserCallBack={user => this.deleteUser(user)}/>
                         ))
                     }
                     </tbody>
@@ -53,7 +46,8 @@ class Users extends Component {
 }
 
 const mapDispatchToProps = {
-    listUsers
+    listUsers,
+    deleteUser
 };
 
 const mapStateToProps = (state) => {
