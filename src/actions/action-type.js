@@ -1,2 +1,4 @@
 export const CONNECTION = "CONNECTION";
 export const SET_AUTHANTICATION = "SET_AUTHENTICATION";
+export const PARSE_ERROR = "PARSE_ERROR";
+export const RESET_ERROR = "RESET_ERROR";
