@@ -1,4 +1,4 @@
-import {CONNECTION, PARSE_ERROR, RESET_ERROR, SET_AUTHENTICATION} from "./action-type";
+import {PARSE_ERROR, RESET_ERROR, SET_AUTHENTICATION} from "./action-type";
 import axios from 'axios';
 const qs = require('qs');
 

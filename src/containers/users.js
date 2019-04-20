@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {listUsers} from "../actions/users";
+import {Link} from "react-router-dom";
 
 class Users extends Component {
 
@@ -42,6 +43,9 @@ class Users extends Component {
                     }
                     </tbody>
                 </table>
+                <Link to={"add-user-form"}>
+                    <button type="button" className="btn btn-primary btn-raised">Ajouter</button>
+                </Link>
             </div>
         );
     }
