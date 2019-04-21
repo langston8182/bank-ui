@@ -13,12 +13,13 @@ export default function authenticationReducer(state = initialState, action) {
             };
 
         case CONNECTED_USER:
-            const {firstName, lastName} = action.payload;
+            const {firstName, lastName, id} = action.payload;
             return {
                 ...state,
                 connectedUser: {
                     firstName: firstName,
-                    lastName: lastName
+                    lastName: lastName,
+                    id: id
                 }
             }
 

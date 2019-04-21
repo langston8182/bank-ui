@@ -22,10 +22,10 @@ export function listUsers() {
     };
 }
 
-export function deleteUser(user, history) {
+export function deleteUser({id}, history) {
     return function(dispatch) {
         const data = {
-            id: user.id
+            id: id
         };
         const option = {
             method: "DELETE",
@@ -43,13 +43,13 @@ export function deleteUser(user, history) {
     }
 }
 
-export function modifyUser(user, history) {
+export function modifyUser({lastName, firstName, email, id}, history) {
     return function(dispatch) {
         const data = {
-            nom: user.lastName,
-            prenom: user.firstName,
-            email: user.email,
-            id: user.id
+            nom: lastName,
+            prenom: firstName,
+            email: email,
+            id: id
         };
         const option = {
             method: "PUT",
@@ -66,13 +66,13 @@ export function modifyUser(user, history) {
     }
 }
 
-export function addUser(user, history) {
+export function addUser({lastName, firstName, email, password}, history) {
     return function(dispatch) {
         const data = {
-            nom: user.lastName,
-            prenom: user.firstName,
-            email: user.email,
-            motDePasse: user.password
+            nom: lastName,
+            prenom: firstName,
+            email: email,
+            motDePasse: password
         };
 
         const option = {
