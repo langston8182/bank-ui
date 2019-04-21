@@ -32,7 +32,10 @@ class Users extends Component {
                     <tbody>
                     {
                         this.props.users.map(user => (
-                            <UserListItem key={user.email} user={user} deleteUserCallBack={user => this.deleteUser(user)}/>
+                            <UserListItem key={user.email}
+                                          user={user}
+                                          match={this.props.match}
+                                          deleteUserCallBack={user => this.deleteUser(user)}/>
                         ))
                     }
                     </tbody>
