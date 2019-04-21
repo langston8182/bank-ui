@@ -8,7 +8,6 @@ class Signout extends Component {
         this.props.signout();
     }
 
-
     render() {
         return (
             <div>

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from "redux-form";
-import lodash from 'lodash';
 import {getUserById} from "../selectors";
 import {modifyUser} from "../actions/users";
 

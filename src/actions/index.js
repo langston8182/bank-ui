@@ -29,7 +29,8 @@ export function getConnectedUser() {
                 type: CONNECTED_USER,
                 payload: {
                     firstName: response.data.prenom,
-                    lastName: response.data.nom
+                    lastName: response.data.nom,
+                    id: response.data.id
                 }
             })
         });

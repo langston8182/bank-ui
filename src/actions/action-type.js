@@ -5,3 +5,5 @@ export const RESET_ERROR = "RESET_ERROR";
 export const LIST_USERS = "LIST_USERS";
 export const ADD_USER = "ADD_USER";
 export const MODIFY_USER = "MODIFY_USER";
+export const LIST_USER_OPERATION = "LIST_USER_OPERATION";
+export const ADD_OPERATION = "ADD_OPERATION";
