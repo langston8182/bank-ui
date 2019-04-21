@@ -15,6 +15,12 @@ const FIELDS = {
 
 class ModifyUserForm extends Component {
 
+
+    componentDidMount() {
+        !this.props.initialValues && this.props.history.push("/users");
+    }
+
+
     handleSubmit = user => {
         this.props.modifyUser(user, this.props.history);
     };
