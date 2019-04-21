@@ -42,6 +42,29 @@ export function deleteUser(user, history) {
     }
 }
 
+export function modifyUser(user, history) {
+    return function(dispatch) {
+        const data = {
+            nom: user.lastName,
+            prenom: user.firstName,
+            email: user.email,
+            id: user.id
+        };
+        const option = {
+            method: "PUT",
+            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs`,
+            data: data,
+            headers: {
+                "Authorization": "bearer " + localStorage.getItem("token"),
+                "content-type": "application/json"
+            }
+        };
+        axios(option).then(response => {
+            history.push("/users");
+        });
+    }
+}
+
 export function addUser(user, history) {
     return function(dispatch) {
         const data = {

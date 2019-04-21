@@ -7,7 +7,7 @@ import * as validation from "../validations/index";
 const FIELDS = {
     email: "email",
     password: "password"
-}
+};
 
 class SigninForm extends Component {
     handleSubmit = (credentials) => {
