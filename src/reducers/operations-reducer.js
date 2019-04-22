@@ -1,4 +1,10 @@
-import {ADD_OPERATION, DELETE_OPERATION, LIST_USER_OPERATION, SET_OPERATION_TO_MODIFY} from "../actions/action-type";
+import {
+    ADD_OPERATION,
+    DELETE_OPERATION,
+    LIST_USER_OPERATION,
+    MODIFY_OPERATION,
+    SET_OPERATION_TO_MODIFY
+} from "../actions/action-type";
 import lodash from 'lodash';
 
 const initialState = {operationToModify: undefined, operations: []};
@@ -18,12 +24,11 @@ export default function listUserOperations(state = initialState, action) {
             return {operations: operations.map(operation => operation)};
 
         case ADD_OPERATION:
-            const {id, intitule, dateOperation, prix} = action.payload;
             const operation = {
-                id: id,
-                labelOperation: intitule,
-                dateOperation: dateOperation,
-                price: prix
+                id: action.payload.id,
+                labelOperation: action.payload.intitule,
+                dateOperation: action.payload.dateOperation,
+                price: action.payload.prix
             };
             return {
                 ...state,
@@ -41,6 +46,22 @@ export default function listUserOperations(state = initialState, action) {
                 operations: operationsInState
             };
 
+        case MODIFY_OPERATION:
+            const operationModify = {
+                id: action.payload.id,
+                labelOperation: action.payload.intitule,
+                dateOperation: action.payload.dateOperation,
+                price: action.payload.prix
+            };
+
+            return {
+                ...state,
+                operations: replaceObjectByAnotherInArrayByIndex(
+                    lodash.findIndex(state.operations, {id: action.payload.id}),
+                    state.operations,
+                    operationModify)
+            };
+
         case SET_OPERATION_TO_MODIFY:
             return {
                 ...state,
@@ -49,5 +70,12 @@ export default function listUserOperations(state = initialState, action) {
 
         default:
             return state
+    }
+
+    function replaceObjectByAnotherInArrayByIndex(index, array, newObject) {
+        let newArr = array.slice();
+        newArr.splice(index, 1, newObject);
+
+        return newArr;
     }
 }

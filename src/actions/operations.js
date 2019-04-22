@@ -4,7 +4,7 @@ import {
     DELETE_OPERATION,
     LIST_USER_OPERATION,
     SET_OPERATION_TO_MODIFY,
-    SET_AUTHENTICATION
+    MODIFY_OPERATION
 } from "./action-type";
 export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
@@ -44,18 +44,23 @@ export function deleteOperation({id}) {
                 type: DELETE_OPERATION,
                 payload: id
             });
+            dispatch(setOperationToModify(undefined));
         });
     }
 }
 
-export function modifyOperation({id, labelOperation, dateOperation, price}) {
+export function modifyOperation({id, labelOperation, dayOfMonth, price}) {
     return function(dispatch) {
         const data = {
             id: id,
             intitule: labelOperation,
-            dateOperation: dateOperation,
+            dateOperation: getCurrentDateWithInputDay(dayOfMonth),
             prix: price
         };
+        console.log('---------------');
+        console.log('', dayOfMonth);
+        console.log('---------------');
+
         const option = {
             method: "PUT",
             url: `${URL_SERVICE_UTILISATEUR}/operations`,
@@ -65,10 +70,11 @@ export function modifyOperation({id, labelOperation, dateOperation, price}) {
             }
         };
         axios(option).then(response => {
-            console.log('---------------');
-            console.log('', response);
-            console.log('---------------');
-
+            dispatch({
+                type: MODIFY_OPERATION,
+                payload: response.data
+            });
+            dispatch(setOperationToModify(undefined));
         });
     }
 }
@@ -87,6 +93,10 @@ export function addOperation({id}, {labelOperation, dayOfMonth, price}) {
             dateOperation: getCurrentDateWithInputDay(dayOfMonth),
             prix: price
         };
+        console.log('---------------');
+        console.log('', dayOfMonth);
+        console.log('---------------');
+
         const option = {
             method: "POST",
             url: `${URL_SERVICE_UTILISATEUR}/operations/${id}`,
@@ -96,10 +106,6 @@ export function addOperation({id}, {labelOperation, dayOfMonth, price}) {
             }
         };
         axios(option).then(response => {
-            console.log('---------------');
-            console.log('', response);
-            console.log('---------------');
-
             dispatch({
                 type: ADD_OPERATION,
                 payload: response.data
@@ -110,7 +116,7 @@ export function addOperation({id}, {labelOperation, dayOfMonth, price}) {
 
 function getCurrentDateWithInputDay(day) {
     let date = new Date();
-    date.setDate(day - 1);
+    date.setDate(day);
 
     return date;
 }
