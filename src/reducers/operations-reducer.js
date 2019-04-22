@@ -1,6 +1,7 @@
-import {ADD_OPERATION, LIST_USER_OPERATION} from "../actions/action-type";
+import {ADD_OPERATION, DELETE_OPERATION, LIST_USER_OPERATION, SET_OPERATION_TO_MODIFY} from "../actions/action-type";
+import lodash from 'lodash';
 
-const initialState = [];
+const initialState = {operationToModify: undefined, operations: []};
 
 export default function listUserOperations(state = initialState, action) {
     switch (action.type) {
@@ -9,22 +10,42 @@ export default function listUserOperations(state = initialState, action) {
             action.payload.map(operation => (
                 operations.push({
                     id: operation.id,
-                    label: operation.intitule,
+                    labelOperation: operation.intitule,
                     dateOperation: operation.dateOperation,
                     price: operation.prix
                 })
             ));
-            return operations.map(operation => operation);
+            return {operations: operations.map(operation => operation)};
 
         case ADD_OPERATION:
             const {id, intitule, dateOperation, prix} = action.payload;
             const operation = {
                 id: id,
-                label: intitule,
+                labelOperation: intitule,
                 dateOperation: dateOperation,
                 price: prix
-            }
-            return [...state, operation];
+            };
+            return {
+                ...state,
+                operations: [...state.operations, operation],
+            };
+
+        case DELETE_OPERATION:
+            let operationsInState = state.operations.slice();
+            lodash.remove(operationsInState, val => {
+                return val.id === action.payload
+            });
+
+            return {
+                ...state,
+                operations: operationsInState
+            };
+
+        case SET_OPERATION_TO_MODIFY:
+            return {
+                ...state,
+                operationToModify: action.payload
+            };
 
         default:
             return state
