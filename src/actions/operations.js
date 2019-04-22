@@ -4,7 +4,7 @@ import {
     DELETE_OPERATION,
     LIST_USER_OPERATION,
     SET_OPERATION_TO_MODIFY,
-    MODIFY_OPERATION
+    MODIFY_OPERATION, SET_CURRENT_MONTH
 } from "./action-type";
 export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
@@ -86,6 +86,13 @@ export function setOperationToModify(operationToModify) {
     };
 }
 
+export function setCurrentMonth(month) {
+    return {
+        type: SET_CURRENT_MONTH,
+        payload: month
+    }
+}
+
 export function addOperation({id}, {labelOperation, dayOfMonth, price}) {
     return function(dispatch) {
         const data = {
@@ -93,10 +100,6 @@ export function addOperation({id}, {labelOperation, dayOfMonth, price}) {
             dateOperation: getCurrentDateWithInputDay(dayOfMonth),
             prix: price
         };
-        console.log('---------------');
-        console.log('', dayOfMonth);
-        console.log('---------------');
-
         const option = {
             method: "POST",
             url: `${URL_SERVICE_UTILISATEUR}/operations/${id}`,

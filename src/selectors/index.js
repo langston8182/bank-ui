@@ -23,7 +23,19 @@ export const retrieveOperationToModifyInForm = (state) => {
     };
 };
 
+export const retrieveAllOperationsByMonth =(state) => {
+    let month = state.operation.currentMonth;
+    return state.operation.operations.filter(operation => (
+        month === getMonthOfDate(operation.dateOperation)
+    ));
+};
+
 function getDayOfDate(date) {
     let dateParsed = new Date(date);
     return dateParsed.getDate() + 1;
+}
+
+function getMonthOfDate(date) {
+    let dateParsed = new Date(date);
+    return dateParsed.getMonth();
 }
