@@ -2,12 +2,16 @@ import {
     ADD_OPERATION,
     DELETE_OPERATION,
     LIST_USER_OPERATION,
-    MODIFY_OPERATION,
+    MODIFY_OPERATION, SET_CURRENT_MONTH,
     SET_OPERATION_TO_MODIFY
 } from "../actions/action-type";
 import lodash from 'lodash';
 
-const initialState = {operationToModify: undefined, operations: []};
+const initialState = {
+    operationToModify: undefined,
+    operations: [],
+    currentMonth: new Date().getMonth()
+};
 
 export default function listUserOperations(state = initialState, action) {
     switch (action.type) {
@@ -21,7 +25,10 @@ export default function listUserOperations(state = initialState, action) {
                     price: operation.prix
                 })
             ));
-            return {operations: operations.map(operation => operation)};
+            return {
+                ...state,
+                operations: operations.map(operation => operation)
+            };
 
         case ADD_OPERATION:
             const operation = {
@@ -66,6 +73,12 @@ export default function listUserOperations(state = initialState, action) {
             return {
                 ...state,
                 operationToModify: action.payload
+            };
+
+        case SET_CURRENT_MONTH:
+            return {
+                ...state,
+                currentMonth: action.payload
             };
 
         default:

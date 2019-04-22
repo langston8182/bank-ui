@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import AddModifyOperationForm from "./add-modify-operation-form";
 import OperationList from "./operations-list";
 import {setOperationToModify} from "../../actions/operations";
+import PaginationYear from "./pagination-year";
 
 class IndexOperation extends Component {
 
@@ -22,6 +23,9 @@ class IndexOperation extends Component {
                     <AddModifyOperationForm />
                 </div>
                 <OperationList />
+                <div className="row justify-content-md-center">
+                    <PaginationYear />
+                </div>
             </div>
         );
     }

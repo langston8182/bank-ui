@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {listUserOperations, deleteOperation, setOperationToModify} from "../../actions/operations";
 import OperationListItem from "../../components/operation-list-item";
-import {retrieveOperationToModifyInForm} from "../../selectors";
+import {retrieveAllOperationsByMonth, retrieveOperationToModifyInForm} from "../../selectors";
 
 class OperationsList extends Component {
 
@@ -64,7 +64,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => {
     return {
         currentUser: state.authentication.connectedUser,
-        operations: state.operation.operations,
+        operations: retrieveAllOperationsByMonth(state),
         operationToModify: retrieveOperationToModifyInForm(state)
     }
 };
