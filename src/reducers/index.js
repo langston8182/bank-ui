@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
     authentication: AuthenticationReducer,
     error: ErrorReducer,
     users: UsersReducer,
-    operations: UserOperations
+    operation: UserOperations,
 });
 
 export default rootReducer;

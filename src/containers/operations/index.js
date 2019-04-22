@@ -1,9 +1,17 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import AddOperationForm from "./add-operation-form";
+import AddModifyOperationForm from "./add-modify-operation-form";
 import OperationList from "./operations-list";
+import {setOperationToModify} from "../../actions/operations";
 
 class IndexOperation extends Component {
+
+
+    componentWillMount() {
+        this.props.setOperationToModify(undefined);
+    }
+
+
     render() {
         return (
             <div>
@@ -11,7 +19,7 @@ class IndexOperation extends Component {
                     <h1>Modifier opérations</h1>
                 </div>
                 <div className="row justify-content-md-left">
-                    <AddOperationForm />
+                    <AddModifyOperationForm />
                 </div>
                 <OperationList />
             </div>
@@ -19,10 +27,14 @@ class IndexOperation extends Component {
     }
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    setOperationToModify: setOperationToModify
+};
 
 const mapStateToProps = (state) => {
-    return {}
+    return {
+        operationToModify: state.operation.operationToModify
+    }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(IndexOperation);

@@ -1,20 +1,26 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from "redux-form";
-import {addOperation} from "../../actions/operations";
+import {addOperation, modifyOperation} from "../../actions/operations";
+import ActionOperationButton from "./acion-operation-button";
+import {retrieveOperationToModifyInForm} from "../../selectors";
 
 const FIELDS = {
-    dayOfMounth: "dayOfMounth",
+    dayOfMonth: "dayOfMonth",
     labelOperation: "labelOperation",
     price: "price",
 };
 
-class AddOperationForm extends Component {
+class AddModifyOperationForm extends Component {
     handleSubmit = (operation) => {
-        this.props.addOperation(this.props.currentUser, operation);
+        if (this.props.operationToModify === undefined) {
+            this.props.addOperation(this.props.currentUser, operation);
+        } else {
+            this.props.modifyOperation(operation);
+        }
     };
 
-    renderAddOperationComponen = field => {
+    renderAddOperationComponent = field => {
         return (
             <div className="md-form">
                 <label className="sr-only">{field.label}</label>
@@ -34,27 +40,25 @@ class AddOperationForm extends Component {
                 </div>
                 <form onSubmit={handleSubmit(this.handleSubmit)} className="form-inline">
                     <Field
-                        name={FIELDS.dayOfMounth}
-                        component={this.renderAddOperationComponen}
+                        name={FIELDS.dayOfMonth}
+                        component={this.renderAddOperationComponent}
                         type="text"
                         label="Jour du mois"
                     />
                     <Field
                         name={FIELDS.labelOperation}
-                        component={this.renderAddOperationComponen}
+                        component={this.renderAddOperationComponent}
                         type="text"
                         label="Libelle"
                     />
                     <Field
                         name={FIELDS.price}
-                        component={this.renderAddOperationComponen}
+                        component={this.renderAddOperationComponent}
                         type="text"
                         label="Prix"
                     />
 
-                    <button type="submit" className="btn btn-warning btn-raised">
-                        Ajouter
-                    </button>
+                    <ActionOperationButton />
                 </form>
             </div>
         );
@@ -63,16 +67,20 @@ class AddOperationForm extends Component {
 
 const addOperationForm = reduxForm({
     form: "addOperation",
-    fields: Object.keys(FIELDS)
-})(AddOperationForm);
+    fields: Object.keys(FIELDS),
+    enableReinitialize: true
+})(AddModifyOperationForm);
 
 const mapDispatchToProps = {
-    addOperation
+    addOperation,
+    modifyOperation
 };
 
 const mapStateToProps = (state) => {
     return {
-        currentUser: state.authentication.connectedUser
+        currentUser: state.authentication.connectedUser,
+        initialValues: retrieveOperationToModifyInForm(state),
+        operationToModify: state.operation.operationToModify
     }
 };
 
