@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {listUserOperations, deleteOperation, setOperationToModify} from "../../actions/operations";
+import {deleteOperation, listUserOperations, setOperationToModify} from "../../actions/operations";
 import OperationListItem from "../../components/operation-list-item";
 import {retrieveAllOperationsByMonth, retrieveOperationToModifyInForm} from "../../selectors";
 
@@ -34,6 +34,12 @@ class OperationsList extends Component {
         ));
     };
 
+    calculateTotal = () => {
+        const {operations} = this.props;
+        return operations.reduce(
+            (acc, operation2) => acc + operation2.price, 0);
+    }
+
     render() {
         return (
             <div className="body_content">
@@ -48,6 +54,11 @@ class OperationsList extends Component {
                     </thead>
                     <tbody>
                         {this.renderUserOperations()}
+                        <tr>
+                            <td colSpan="4">
+                                Total : {this.calculateTotal()}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
