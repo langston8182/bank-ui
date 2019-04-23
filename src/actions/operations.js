@@ -49,17 +49,14 @@ export function deleteOperation({id}) {
     }
 }
 
-export function modifyOperation({id, labelOperation, dayOfMonth, price}) {
+export function modifyOperation(currentMonth, {id, labelOperation, dayOfMonth, price}) {
     return function(dispatch) {
         const data = {
             id: id,
             intitule: labelOperation,
-            dateOperation: getCurrentDateWithInputDay(dayOfMonth),
+            dateOperation: getCurrentDateWithMonthAndInputDay(currentMonth, dayOfMonth),
             prix: price
         };
-        console.log('---------------');
-        console.log('', dayOfMonth);
-        console.log('---------------');
 
         const option = {
             method: "PUT",
@@ -93,11 +90,11 @@ export function setCurrentMonth(month) {
     }
 }
 
-export function addOperation({id}, {labelOperation, dayOfMonth, price}) {
+export function addOperation({id}, currentMonth, {labelOperation, dayOfMonth, price}) {
     return function(dispatch) {
         const data = {
             intitule: labelOperation,
-            dateOperation: getCurrentDateWithInputDay(dayOfMonth),
+            dateOperation: getCurrentDateWithMonthAndInputDay(currentMonth, dayOfMonth),
             prix: price
         };
         const option = {
@@ -120,6 +117,13 @@ export function addOperation({id}, {labelOperation, dayOfMonth, price}) {
 function getCurrentDateWithInputDay(day) {
     let date = new Date();
     date.setDate(day);
+
+    return date;
+}
+
+function getCurrentDateWithMonthAndInputDay(month, day) {
+    let date = getCurrentDateWithInputDay(day);
+    date.setMonth(month);
 
     return date;
 }

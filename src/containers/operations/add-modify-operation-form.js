@@ -14,9 +14,11 @@ const FIELDS = {
 class AddModifyOperationForm extends Component {
     handleSubmit = (operation) => {
         if (this.props.operationToModify === undefined) {
-            this.props.addOperation(this.props.currentUser, operation);
+            const {addOperation, currentUser, currentMonth} = this.props;
+            addOperation(currentUser, currentMonth, operation);
         } else {
-            this.props.modifyOperation(operation);
+            const {modifyOperation, currentMonth} = this.props;
+            modifyOperation(currentMonth, operation);
         }
     };
 
@@ -80,7 +82,8 @@ const mapStateToProps = (state) => {
     return {
         currentUser: state.authentication.connectedUser,
         initialValues: retrieveOperationToModifyInForm(state),
-        operationToModify: state.operation.operationToModify
+        operationToModify: state.operation.operationToModify,
+        currentMonth: state.operation.currentMonth
     }
 };
 
