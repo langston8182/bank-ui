@@ -1,11 +1,16 @@
 import {
     ADD_PERMANENT_OPERATION,
     DELETE_PERMANENT_OPERATION,
-    LIST_USER_OPERATION_PERMANENTE
+    LIST_USER_OPERATION_PERMANENTE,
+    MODIFY_OPERATION,
+    MODIFY_PERMANENT_OPERATION,
+    SET_OPERATION_TO_MODIFY,
+    SET_PERMANENT_OPERATION_TO_MODIFY
 } from "../actions/action-type";
 import lodash from "lodash";
 
 const initialState = {
+    permanentOperationToModify: undefined,
     permanentOperations: [],
 };
 
@@ -16,8 +21,8 @@ export default function permanentOperations(state = initialState, action) {
             action.payload.map(permanentOperation => (
                 permanentOperations.push({
                     id: permanentOperation.id,
-                    labelPermanentOperation: permanentOperation.intitule,
-                    dayPermanentOperation: permanentOperation.jour,
+                    label: permanentOperation.intitule,
+                    day: permanentOperation.jour,
                     price: permanentOperation.prix
                 })
             ));
@@ -29,13 +34,29 @@ export default function permanentOperations(state = initialState, action) {
         case ADD_PERMANENT_OPERATION:
             const permanentOperation = {
                 id: action.payload.id,
-                dayPermanentOperation: action.payload.jour,
+                day: action.payload.jour,
                 price: action.payload.prix,
-                labelPermanentOperation: action.payload.intitule
+                label: action.payload.intitule
             };
             return {
                 ...state,
                 permanentOperations: [...state.permanentOperations, permanentOperation]
+            };
+
+        case MODIFY_PERMANENT_OPERATION:
+            const permanentOperationModify = {
+                id: action.payload.id,
+                label: action.payload.intitule,
+                day: action.payload.jour,
+                price: action.payload.prix
+            };
+
+            return {
+                ...state,
+                permanentOperations: replaceObjectByAnotherInArrayByIndex(
+                    lodash.findIndex(state.permanentOperations, {id: action.payload.id}),
+                    state.permanentOperations,
+                    permanentOperationModify)
             };
 
         case DELETE_PERMANENT_OPERATION:
@@ -48,7 +69,20 @@ export default function permanentOperations(state = initialState, action) {
                 permanentOperations: permanentOperationsInState
             };
 
+        case SET_PERMANENT_OPERATION_TO_MODIFY:
+            return {
+                ...state,
+                permanentOperationToModify: action.payload
+            };
+
         default:
             return state;
+    }
+
+    function replaceObjectByAnotherInArrayByIndex(index, array, newObject) {
+        let newArr = array.slice();
+        newArr.splice(index, 1, newObject);
+
+        return newArr;
     }
 }

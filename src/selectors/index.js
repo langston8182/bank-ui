@@ -10,6 +10,10 @@ export const operationToModify = state => {
     return state.operation.operationToModify;
 };
 
+export const permanentOperationToModify = state => {
+    return state.permanentOperation.permanentOperationToModify;
+};
+
 export const retrieveOperationToModifyInForm = (state) => {
     let operation = lodash.find(state.operation.operations, operation => {
         return operation.id === state.operation.operationToModify;
@@ -21,6 +25,16 @@ export const retrieveOperationToModifyInForm = (state) => {
         ...operation,
         dayOfMonth: getDayOfDate(operation.dateOperation)
     };
+};
+
+export const retrievePermanentOperationToModifyInForm = (state) => {
+    let permanentOperation = lodash.find(state.permanentOperation.permanentOperations, permanentOperation => {
+        return permanentOperation.id === state.permanentOperation.permanentOperationToModify;
+    });
+    if (permanentOperation === undefined) {
+        return undefined;
+    }
+    return permanentOperation;
 };
 
 export const retrieveAllOperationsByMonth =(state) => {

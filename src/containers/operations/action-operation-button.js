@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {operationToModify} from "../../selectors";
 
-class AcionOperationButton extends Component {
+class ActionOperationButton extends Component {
     render(props) {
         const {operationToModify} = this.props;
 
@@ -22,4 +22,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AcionOperationButton);
+export default connect(mapStateToProps, mapDispatchToProps)(ActionOperationButton);

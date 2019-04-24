@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {deleteOperation, listUserOperations, setOperationToModify} from "../../actions/operations";
+import {deleteOperation, setOperationToModify} from "../../actions/operations";
 import OperationListItem from "../../components/operation-list-item";
 import {retrieveAllOperationsByMonth, retrieveOperationToModifyInForm} from "../../selectors";
 
@@ -62,7 +62,6 @@ class OperationsList extends Component {
 }
 
 const mapDispatchToProps = {
-    listUserOperations,
     deleteOperation,
     setOperationToModify
 };

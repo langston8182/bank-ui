@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from "redux-form";
 import {addOperation, modifyOperation} from "../../actions/operations";
-import ActionOperationButton from "./acion-operation-button";
+import ActionOperationButton from "./action-operation-button";
 import {retrieveOperationToModifyInForm} from "../../selectors";
 
 const FIELDS = {
