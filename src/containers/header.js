@@ -38,8 +38,17 @@ class Header extends Component {
                 <li className="nav-item">
                     <Link to={"/users"} className="nav-link">Utilisateurs</Link>
                 </li>
-                <li className="nav-item">
-                    <Link to={"/operations"} className="nav-link">Operations</Link>
+                <li className="nav-item dropdown">
+                    <a href="#"
+                          className="nav-link dropdown-toggle"
+                          data-toggle="dropdown"
+                          role="button"
+                          aria-haspopup="true"
+                          aria-expanded="false">Actions</a>
+                    <div className="dropdown-menu">
+                        <Link to={"/operations"} className="dropdown-item">Operations</Link>
+                        <Link to={"/operations-permanentes"} className="dropdown-item">Operations permanentes</Link>
+                    </div>
                 </li>
                 {this.renderAuthenticationLink()}
             </ul>

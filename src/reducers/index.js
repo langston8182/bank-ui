@@ -4,6 +4,7 @@ import AuthenticationReducer from './logged-in-reducer';
 import ErrorReducer from './error-reducer';
 import UsersReducer from './users-reducer';
 import UserOperations from './operations-reducer';
+import UserPermanentOperations from './permanent-operations-reducer';
 
 const rootReducer = combineReducers({
     form,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
     error: ErrorReducer,
     users: UsersReducer,
     operation: UserOperations,
+    permanentOperation: UserPermanentOperations
 });
 
 export default rootReducer;
