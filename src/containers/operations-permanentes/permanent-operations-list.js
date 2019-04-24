@@ -4,11 +4,6 @@ import {listUserPermanentOperations} from "../../actions/operations-permanentes"
 import PermanentOperationListItem from "../../components/permanent-operation-list-item";
 
 class PermanentOperationsList extends Component {
-    componentDidUpdate(next) {
-        const {currentUser} = this.props;
-        currentUser !== next.currentUser && this.props.listUserPermanentOperations(currentUser);
-    }
-
     renderUserPermanentOperations = () => {
         return this.props.permanentOperations.map(permanentOperation => (
             <PermanentOperationListItem

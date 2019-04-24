@@ -1,5 +1,5 @@
 import axios from "axios";
-import {LIST_USER_OPERATION_PERMANENTE} from "./action-type";
+import {ADD_PERMANENT_OPERATION, LIST_USER_OPERATION_PERMANENTE} from "./action-type";
 export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
 export function listUserPermanentOperations({id}) {
@@ -17,5 +17,29 @@ export function listUserPermanentOperations({id}) {
                 payload: response.data.operationPermanenteDtos
             });
         });
+    }
+}
+
+export function addPermanentOperation({id}, {day, label, price}) {
+    return function(dispatch) {
+        const data = {
+            intitule: label,
+            jour: day,
+            prix: price
+        };
+        const option = {
+            method: "POST",
+            url: `${URL_SERVICE_UTILISATEUR}/operations-permanentes/${id}`,
+            data: data,
+            headers: {
+                "Authorization": 'bearer ' + localStorage.getItem("token")
+            }
+        };
+        axios(option).then(response => {
+            dispatch({
+                type: ADD_PERMANENT_OPERATION,
+                payload: response.data
+            })
+        })
     }
 }

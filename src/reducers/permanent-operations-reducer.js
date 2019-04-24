@@ -1,4 +1,4 @@
-import {LIST_USER_OPERATION_PERMANENTE} from "../actions/action-type";
+import {ADD_PERMANENT_OPERATION, LIST_USER_OPERATION_PERMANENTE} from "../actions/action-type";
 
 const initialState = {
     permanentOperations: [],
@@ -7,10 +7,6 @@ const initialState = {
 export default function permanentOperations(state = initialState, action) {
     switch (action.type) {
         case LIST_USER_OPERATION_PERMANENTE:
-            console.log('---------------');
-            console.log('', action);
-            console.log('---------------');
-
             let permanentOperations = [];
             action.payload.map(permanentOperation => (
                 permanentOperations.push({
@@ -23,6 +19,18 @@ export default function permanentOperations(state = initialState, action) {
             return {
                 ...state,
                 permanentOperations: permanentOperations.map(permanentOperation => permanentOperation)
+            };
+
+        case ADD_PERMANENT_OPERATION:
+            const permanentOperation = {
+                id: action.payload.id,
+                dayPermanentOperation: action.payload.jour,
+                price: action.payload.prix,
+                labelPermanentOperation: action.payload.intitule
+            };
+            return {
+                ...state,
+                permanentOperations: [...state.permanentOperations, permanentOperation]
             };
 
         default:
