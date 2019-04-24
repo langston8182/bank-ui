@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from "redux-form";
-import ActionOperationButton from "../operations/acion-operation-button";
-import {addPermanentOperation} from "../../actions/operations-permanentes";
+import ActionPermanentOperationButton from "../operations-permanentes/action-permanent-operation-button";
+import {addPermanentOperation, modifyPermanentOperation} from "../../actions/operations-permanentes";
+import {retrievePermanentOperationToModifyInForm} from "../../selectors";
 
 const FIELDS = {
     day: "day",
@@ -13,8 +14,13 @@ const FIELDS = {
 class AddModifyPermanentOperationForm extends Component {
 
     handleSubmit = (operation) => {
-        const {addPermanentOperation, currentUser} = this.props;
-        addPermanentOperation(currentUser, operation);
+        if (this.props.permanentOperationToModify === undefined) {
+            const {addPermanentOperation, currentUser} = this.props;
+            addPermanentOperation(currentUser, operation);
+        } else {
+            const {modifyPermanentOperation} = this.props;
+            modifyPermanentOperation(operation);
+        }
     };
 
     renderAddOperationComponent = field => {
@@ -55,7 +61,7 @@ class AddModifyPermanentOperationForm extends Component {
                         label="Prix"
                     />
 
-                    <ActionOperationButton />
+                    <ActionPermanentOperationButton />
                 </form>
             </div>
         );
@@ -69,12 +75,15 @@ const addPermanentOperationForm = reduxForm({
 })(AddModifyPermanentOperationForm);
 
 const mapDispatchToProps = {
-    addPermanentOperation
+    addPermanentOperation,
+    modifyPermanentOperation
 };
 
 const mapStateToProps = (state) => {
     return {
         currentUser: state.authentication.connectedUser,
+        initialValues: retrievePermanentOperationToModifyInForm(state),
+        permanentOperationToModify: state.permanentOperation.permanentOperationToModify,
     }
 };
 

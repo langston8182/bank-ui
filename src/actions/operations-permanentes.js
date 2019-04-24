@@ -1,5 +1,10 @@
 import axios from "axios";
-import {ADD_PERMANENT_OPERATION, DELETE_PERMANENT_OPERATION, LIST_USER_OPERATION_PERMANENTE} from "./action-type";
+import {
+    ADD_PERMANENT_OPERATION,
+    DELETE_PERMANENT_OPERATION,
+    LIST_USER_OPERATION_PERMANENTE, MODIFY_PERMANENT_OPERATION,
+    SET_PERMANENT_OPERATION_TO_MODIFY
+} from "./action-type";
 export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
 export function listUserPermanentOperations({id}) {
@@ -16,6 +21,40 @@ export function listUserPermanentOperations({id}) {
                 type: LIST_USER_OPERATION_PERMANENTE,
                 payload: response.data.operationPermanenteDtos
             });
+        });
+    }
+}
+
+export function setPermanentOperationToModify(permanentOperationToModify) {
+    return {
+        type: SET_PERMANENT_OPERATION_TO_MODIFY,
+        payload: permanentOperationToModify
+    };
+}
+
+export function modifyPermanentOperation({id, label, day, price}) {
+    return function(dispatch) {
+        const data = {
+            id: id,
+            intitule: label,
+            jour: day,
+            prix: price
+        };
+
+        const option = {
+            method: "PUT",
+            url: `${URL_SERVICE_UTILISATEUR}/operations-permanentes`,
+            data: data,
+            headers: {
+                "Authorization": 'bearer ' + localStorage.getItem("token")
+            }
+        };
+        axios(option).then(response => {
+            dispatch({
+                type: MODIFY_PERMANENT_OPERATION,
+                payload: response.data
+            });
+            dispatch(setPermanentOperationToModify(undefined));
         });
     }
 }
