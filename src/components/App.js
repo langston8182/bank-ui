@@ -9,6 +9,7 @@ import Users from "../containers/users";
 import AddUserForm from "../containers/add-user-form";
 import ModifyUserForm from "../containers/modify-user-form";
 import IndexOperation from "../containers/operations/index";
+import IndexOperationPermanente from "../containers/operations-permanentes/index";
 
 require("../index.css");
 
@@ -27,7 +28,8 @@ class App extends Component {
             <Route exact path="/users" component={Users} />
             <Route exact path="/users/modify-user-form/:id" component={ModifyUserForm} />
             <Route exact path="/add-user-form" component={AddUserForm} />
-              <Route exact path="/operations" component={IndexOperation} />
+            <Route exact path="/operations" component={IndexOperation} />
+            <Route exact path="/operations-permanentes" component={IndexOperationPermanente} />
           </Switch>
         </div>
       </div>
