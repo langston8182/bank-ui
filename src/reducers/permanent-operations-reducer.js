@@ -1,4 +1,9 @@
-import {ADD_PERMANENT_OPERATION, LIST_USER_OPERATION_PERMANENTE} from "../actions/action-type";
+import {
+    ADD_PERMANENT_OPERATION,
+    DELETE_PERMANENT_OPERATION,
+    LIST_USER_OPERATION_PERMANENTE
+} from "../actions/action-type";
+import lodash from "lodash";
 
 const initialState = {
     permanentOperations: [],
@@ -31,6 +36,16 @@ export default function permanentOperations(state = initialState, action) {
             return {
                 ...state,
                 permanentOperations: [...state.permanentOperations, permanentOperation]
+            };
+
+        case DELETE_PERMANENT_OPERATION:
+            let permanentOperationsInState = state.permanentOperations.slice();
+            lodash.remove(permanentOperationsInState, val => {
+                return val.id === action.payload
+            });
+            return {
+                ...state,
+                permanentOperations: permanentOperationsInState
             };
 
         default:

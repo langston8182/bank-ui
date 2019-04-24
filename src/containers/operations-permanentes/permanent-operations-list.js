@@ -2,13 +2,19 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {listUserPermanentOperations} from "../../actions/operations-permanentes";
 import PermanentOperationListItem from "../../components/permanent-operation-list-item";
+import {deletePermanentOperation} from "../../actions/operations-permanentes";
 
 class PermanentOperationsList extends Component {
+    deletePermanentOperation(permanentOperation) {
+        this.props.deletePermanentOperation(permanentOperation);
+    }
+
     renderUserPermanentOperations = () => {
         return this.props.permanentOperations.map(permanentOperation => (
             <PermanentOperationListItem
                 key={permanentOperation.id}
                 permanentOperation={permanentOperation}
+                deletePermanentOperationCallBack={permanentOperation => this.deletePermanentOperation(permanentOperation)}
             />
         ));
     };
@@ -35,7 +41,8 @@ class PermanentOperationsList extends Component {
 }
 
 const mapDispatchToProps = {
-    listUserPermanentOperations
+    listUserPermanentOperations,
+    deletePermanentOperation
 };
 
 const mapStateToProps = (state) => {
