@@ -6,11 +6,6 @@ import {retrieveAllOperationsByMonth, retrieveOperationToModifyInForm} from "../
 
 class OperationsList extends Component {
 
-    componentDidUpdate(next) {
-        const {currentUser} = this.props;
-        currentUser !== next.currentUser && this.props.listUserOperations(currentUser);
-    }
-
     deleteOperation(operation) {
         this.props.deleteOperation(operation);
     }

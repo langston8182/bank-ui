@@ -1,5 +1,8 @@
-import {CONNECTED_USER, PARSE_ERROR, RESET_ERROR, SET_AUTHENTICATION} from "./action-type";
+import {CONNECTED_USER, LIST_USER_OPERATION, PARSE_ERROR, RESET_ERROR, SET_AUTHENTICATION} from "./action-type";
 import axios from 'axios';
+import {listUserOperations} from "./operations";
+import {listUserPermanentOperations} from "./operations-permanentes";
+
 const qs = require('qs');
 
 export const URL_AUTHENTICATION = "http://localhost:8090/auth/oauth/token";
@@ -25,14 +28,17 @@ export function getConnectedUser() {
         };
 
         axios(option).then(response => {
+            const {prenom, nom, id} = response.data;
             dispatch({
                 type: CONNECTED_USER,
                 payload: {
-                    firstName: response.data.prenom,
-                    lastName: response.data.nom,
-                    id: response.data.id
+                    firstName: prenom,
+                    lastName: nom,
+                    id: id
                 }
-            })
+            });
+            dispatch(listUserOperations({id}));
+            dispatch(listUserPermanentOperations({id}));
         });
     }
 }

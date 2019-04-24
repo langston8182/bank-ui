@@ -21,7 +21,7 @@ export default function authenticationReducer(state = initialState, action) {
                     lastName: lastName,
                     id: id
                 }
-            }
+            };
 
         default:
             return state
