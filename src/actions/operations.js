@@ -97,6 +97,7 @@ export function addOperation({id}, currentMonth, {labelOperation, dayOfMonth, pr
             dateOperation: getCurrentDateWithMonthAndInputDay(currentMonth, dayOfMonth),
             prix: price
         };
+
         const option = {
             method: "POST",
             url: `${URL_SERVICE_UTILISATEUR}/operations/${id}`,

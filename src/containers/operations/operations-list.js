@@ -33,7 +33,7 @@ class OperationsList extends Component {
         const {operations} = this.props;
         return operations.reduce(
             (acc, operation2) => acc + operation2.price, 0);
-    }
+    };
 
     render() {
         return (

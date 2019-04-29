@@ -37,11 +37,23 @@ export const retrievePermanentOperationToModifyInForm = (state) => {
     return permanentOperation;
 };
 
-export const retrieveAllOperationsByMonth =(state) => {
+export const retrieveAllOperationsByMonth = (state) => {
     let month = state.operation.currentMonth;
     return state.operation.operations.filter(operation => (
         month === getMonthOfDate(operation.dateOperation)
     ));
+};
+
+export const filteredPermanentOperation = (state) => {
+    const {permanentOperations} = state.permanentOperation;
+    const operations = retrieveAllOperationsByMonth(state);
+
+    return permanentOperations.filter(po => {
+        let operation = lodash.find(operations, operation => {
+            return operation.labelOperation === po.label
+        });
+        return operation === undefined || operation.labelOperation !== po.label;
+    });
 };
 
 function getDayOfDate(date) {
