@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
+import {signin, signout, isAuthenticated} from "../actions";
+import {withAuth} from '@okta/okta-react';
 
 class Header extends Component {
+
+    componentDidUpdate() {
+        this.props.isAuthenticated(this.props.auth);
+    }
 
     renderConnectedUser = () => {
         if (this.props.connectedUser) {
@@ -14,16 +20,17 @@ class Header extends Component {
     };
 
     renderAuthenticationLink() {
+        const {auth} = this.props;
         if (this.props.isLoggedIn) {
             return (
                 <li className="nav-item">
-                    <Link to={"/signout"} className="nav-link">Déconnexion {this.renderConnectedUser()}</Link>
+                    <Link onClick={() => this.props.signout(auth)} className="nav-link">Déconnexion {this.renderConnectedUser()}</Link>
                 </li>
             );
         } else {
             return (
                 <li className="nav-item">
-                    <Link to={"/signin"} className="nav-link">Connexion</Link>
+                    <Link onClick={() => this.props.signin(auth)} className="nav-link">Connexion</Link>
                 </li>
             );
         }
@@ -56,7 +63,11 @@ class Header extends Component {
     }
 }
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    signin,
+    signout,
+    isAuthenticated
+};
 
 const mapStateToProps = (state) => {
     return {
@@ -65,4 +76,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(withAuth(Header));

@@ -5,8 +5,8 @@ import {listUserPermanentOperations} from "./operations-permanentes";
 
 const qs = require('qs');
 
-export const URL_AUTHENTICATION = "http://localhost:8090/auth/oauth/token";
-export const URL_ME = "http://localhost:8090/auth/user/me";
+export const URL_AUTHENTICATION = "https://dev-847930.okta.com/oauth2/default/v1/token";
+export const URL_ME = "https://dev-847930.okta.com/oauth2/default/v1/userInfo";
 
 export function setAuthentication(isLoggedIn) {
     return {
@@ -43,42 +43,33 @@ export function getConnectedUser() {
     }
 }
 
-export function signin({email, password}, history) {
+export function isAuthenticated(auth) {
     return function(dispatch) {
-        const data = {
-            username: email,
-            password: password,
-            grant_type: "password"
-        };
+        auth.isAuthenticated().then(response => {
+            dispatch({
+                type: SET_AUTHENTICATION,
+                payload: response
+            })
+        });
+    }
+}
 
-        const option = {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
-            data: qs.stringify(data),
-            url: URL_AUTHENTICATION,
-            auth: {
-                username: "client",
-                password: "password"
-            }
-        };
-
-        axios(option).then(response => {
-            localStorage.setItem("token", response.data.access_token);
-            dispatch(resetError());
-            dispatch(setAuthentication(true));
-            dispatch(getConnectedUser());
-        }).catch(error => {
-            dispatch(parseError("Identifiants incorrects"));
+export function signin(auth) {
+    return function(dispatch) {
+        auth.login().then(() => {
+            dispatch(isAuthenticated(auth));
         });
     };
 }
 
-export function signout() {
+export function signout(auth) {
     return function(dispatch) {
-        dispatch(setAuthentication(false));
-        localStorage.removeItem("token");
+        auth.logout().then(response => {
+            dispatch({
+                type: SET_AUTHENTICATION,
+                payload: false
+            })
+        });
     }
 }
 
