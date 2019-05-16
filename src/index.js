@@ -7,6 +7,7 @@ import reducers from './reducers';
 import {BrowserRouter} from 'react-router-dom';
 import App from './components/App';
 import {getConnectedUser, setAuthentication} from "./actions";
+import {Security} from "@okta/okta-react";
 
 const invariant = require("redux-immutable-state-invariant").default();
 
@@ -23,10 +24,18 @@ if (token) {
     store.dispatch(getConnectedUser());
 }
 
+const oktaConfig = {
+    issuer: `https://dev-847930.okta.com/oauth2/default`,
+    redirect_uri: `http://localhost:3000/implicit/callback`,
+    client_id: "0oalksrvhklabos4i356"
+};
+
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-            <App />
+            <Security {...oktaConfig}>
+                <App />
+            </Security>
         </BrowserRouter>
     </Provider>,
     document.querySelector('#root'));
