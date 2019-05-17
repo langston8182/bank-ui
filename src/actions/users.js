@@ -2,7 +2,7 @@ import axios from 'axios';
 import {ADD_USER, LIST_USERS} from "./action-type";
 import {parseError} from "./index";
 
-export const URL_SERVICE_UTILISATEUR = "http://192.168.99.100:30100";
+export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
 export function listUsers() {
     return function(dispatch) {

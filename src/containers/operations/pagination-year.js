@@ -12,8 +12,6 @@ class PaginationYear extends Component {
 
 
     renderPagination = () => {
-        const {currentMonth} = this.props;
-
         return MONTHS.map((month, index) => (
             <li className={this.renderActivationClassName(index)} key={index}>
                 <a className="page-link"

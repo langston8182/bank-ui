@@ -6,10 +6,6 @@ import {withAuth} from '@okta/okta-react';
 
 class Header extends Component {
 
-    componentDidUpdate() {
-        this.props.isAuthenticated(this.props.auth);
-    }
-
     renderConnectedUser = () => {
         if (this.props.connectedUser) {
             const {firstName, lastName} = this.props.connectedUser;
@@ -24,13 +20,13 @@ class Header extends Component {
         if (this.props.isLoggedIn) {
             return (
                 <li className="nav-item">
-                    <Link onClick={() => this.props.signout(auth)} className="nav-link">Déconnexion {this.renderConnectedUser()}</Link>
+                    <Link to="#" onClick={() => this.props.signout(auth)} className="nav-link">Déconnexion {this.renderConnectedUser()}</Link>
                 </li>
             );
         } else {
             return (
                 <li className="nav-item">
-                    <Link onClick={() => this.props.signin(auth)} className="nav-link">Connexion</Link>
+                    <Link to="#" onClick={() => this.props.signin(auth)} className="nav-link">Connexion</Link>
                 </li>
             );
         }
