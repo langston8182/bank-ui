@@ -26,7 +26,7 @@ if (token) {
 
 const oktaConfig = {
     issuer: `https://dev-847930.okta.com/oauth2/default`,
-    redirect_uri: `http://localhost:3000/implicit/callback`,
+    redirect_uri: `https://bank-ui.herokuapp.com/implicit/callback`,
     client_id: "0oalksrvhklabos4i356"
 };
 

@@ -9,10 +9,6 @@ const UserListItem = (props) => {
         props.deleteUserCallBack(user);
     }
 
-    function modifyUser(user) {
-        props.modifyUserCallBack(user)
-    }
-
     return (
         <tr key={email}>
             <td>{firstName}</td>

@@ -1,11 +1,8 @@
-import {CONNECTED_USER, LIST_USER_OPERATION, PARSE_ERROR, RESET_ERROR, SET_AUTHENTICATION} from "./action-type";
+import {CONNECTED_USER, PARSE_ERROR, RESET_ERROR, SET_AUTHENTICATION} from "./action-type";
 import axios from 'axios';
 import {listUserOperations} from "./operations";
 import {listUserPermanentOperations} from "./operations-permanentes";
 
-const qs = require('qs');
-
-export const URL_AUTHENTICATION = "https://dev-847930.okta.com/oauth2/default/v1/token";
 export const URL_ME = "https://dev-847930.okta.com/oauth2/default/v1/userInfo";
 
 export function setAuthentication(isLoggedIn) {
@@ -15,6 +12,18 @@ export function setAuthentication(isLoggedIn) {
             isLoggedIn: isLoggedIn
         }
     };
+}
+
+export function setConnectedUser({given_name, family_name}) {
+    return function(dispatch) {
+        dispatch({
+            type: CONNECTED_USER,
+            payload: {
+                firstName: given_name,
+                lastName: family_name,
+            }
+        });
+    }
 }
 
 export function getConnectedUser() {
@@ -49,16 +58,14 @@ export function isAuthenticated(auth) {
             dispatch({
                 type: SET_AUTHENTICATION,
                 payload: response
-            })
+            });
         });
     }
 }
 
 export function signin(auth) {
-    return function(dispatch) {
-        auth.login().then(() => {
-            dispatch(isAuthenticated(auth));
-        });
+    return function() {
+        auth.login();
     };
 }
 
