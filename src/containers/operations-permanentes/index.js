@@ -21,7 +21,7 @@ class IndexOperationPermanente extends Component {
 
 const mapDispatchToProps = {};
 
-const mapStateToProps = (state) => {
+const mapStateToProps = () => {
     return {}
 };
 
