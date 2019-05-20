@@ -105,7 +105,7 @@ const mapDispatchToProps = {
     addUser
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = () => {
     return {}
 };
 

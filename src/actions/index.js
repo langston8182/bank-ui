@@ -1,8 +1,4 @@
-import {CONNECTED_USER, PARSE_ERROR, RESET_ERROR, SET_AUTHENTICATION} from "./action-type";
-import {listUserOperations} from "./operations";
-import {listUserPermanentOperations} from "./operations-permanentes";
-
-export const URL_ME = "https://dev-847930.okta.com/oauth2/default/v1/userInfo";
+import {PARSE_ERROR, RESET_ERROR, SET_AUTHENTICATION} from "./action-type";
 
 export function setAuthentication(isLoggedIn) {
     return function (dispatch) {
@@ -13,45 +9,6 @@ export function setAuthentication(isLoggedIn) {
             }
         });
     };
-}
-
-export function setConnectedUser({given_name, family_name, email}) {
-    return function (dispatch) {
-        dispatch({
-            type: CONNECTED_USER,
-            payload: {
-                firstName: given_name,
-                lastName: family_name,
-                email: email
-            }
-        });
-    }
-}
-
-export function getConnectedUser() {
-    return function (dispatch) {
-        /*const option = {
-            method: "GET",
-            headers: {
-                "Authorization": "bearer " + localStorage.getItem("token")
-            },
-            url: `${URL_ME}`
-        };
-
-        axios(option).then(response => {
-            const {prenom, nom, id} = response.data;
-            dispatch({
-                type: CONNECTED_USER,
-                payload: {
-                    firstName: prenom,
-                    lastName: nom,
-                    id: id
-                }
-            });
-            dispatch(listUserOperations({id}));
-            dispatch(listUserPermanentOperations({id}));
-        });*/
-    }
 }
 
 export function isAuthenticated(auth) {

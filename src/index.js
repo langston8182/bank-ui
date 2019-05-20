@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 import reducers from './reducers';
 import {BrowserRouter} from 'react-router-dom';
 import App from './components/App';
-import {getConnectedUser, setAuthentication} from "./actions";
+import {setAuthentication} from "./actions";
 import {Security} from "@okta/okta-react";
 
 const invariant = require("redux-immutable-state-invariant").default();
@@ -21,13 +21,12 @@ const store = createStoreWithMiddleware(
 const token = localStorage.getItem("token");
 if (token) {
     store.dispatch(setAuthentication(true));
-    store.dispatch(getConnectedUser());
 }
 
 const oktaConfig = {
     issuer: `https://dev-847930.okta.com/oauth2/default`,
     redirect_uri: `http://localhost:3000/implicit/callback`,
-    client_id: "0oalksrvhklabos4i356"
+    client_id: "0oalksrvhklabos4i356",
 };
 
 ReactDOM.render(

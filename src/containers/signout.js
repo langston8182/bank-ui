@@ -21,7 +21,7 @@ const mapDispatchToProps = {
     signout
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = () => {
     return {}
 };
 

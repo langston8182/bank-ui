@@ -72,7 +72,7 @@ export function deleteUser({id}, history) {
 }
 
 export function modifyUser({lastName, firstName, email, id}, history) {
-    return function(dispatch) {
+    return function() {
         const data = {
             nom: lastName,
             prenom: firstName,
