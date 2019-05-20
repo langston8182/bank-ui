@@ -6,7 +6,7 @@ import {
     SET_OPERATION_TO_MODIFY,
     MODIFY_OPERATION, SET_CURRENT_MONTH
 } from "./action-type";
-export const URL_SERVICE_UTILISATEUR = "http://192.168.99.100:30100";
+export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
 export function listUserOperations({id}) {
     return function(dispatch) {

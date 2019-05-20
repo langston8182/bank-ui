@@ -10,21 +10,33 @@ import ModifyUserForm from "../containers/modify-user-form";
 import IndexOperation from "../containers/operations/index";
 import IndexOperationPermanente from "../containers/operations-permanentes/index";
 import {ImplicitCallback, SecureRoute, withAuth} from "@okta/okta-react";
-import {setAuthentication, setConnectedUser} from "../actions";
+import {setAuthentication} from "../actions";
+import {getUserByEmail} from "../actions/users";
 import {connect} from "react-redux";
 
 require("../index.css");
 
 
 class App extends Component {
+
+    async componentWillMount() {
+        this.authenticate();
+    }
+
+
     async componentDidUpdate() {
+        this.authenticate();
+    }
+
+    async authenticate() {
         const isAuthenticated = await this.props.auth.isAuthenticated();
-        if (isAuthenticated && !localStorage.getItem("token")) {
+
+        if (isAuthenticated && !this.props.currentUser) {
             const accessToken = await this.getAccessToken();
-            const userInfo = await this.getUserInfo();
+            const {email} = await this.getUserInfo();
             localStorage.setItem("token", accessToken);
             this.props.setAuthentication(true);
-            this.props.setConnectedUser(userInfo);
+            this.props.getUserByEmail(email);
         } else if (!isAuthenticated && localStorage.getItem("token")) {
             localStorage.removeItem("token");
         }
@@ -62,7 +74,13 @@ class App extends Component {
 
 const mapDispatchToProps = {
     setAuthentication,
-    setConnectedUser
+    getUserByEmail
 };
 
-export default connect(null, mapDispatchToProps)(withAuth(App));
+const mapStateToProps = (state) => {
+    return {
+        currentUser: state.authentication.connectedUser,
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withAuth(App));

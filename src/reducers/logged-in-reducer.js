@@ -2,7 +2,7 @@ import {CONNECTED_USER, SET_AUTHENTICATION} from "../actions/action-type";
 
 const initialState = {
     isLoggedIn: false,
-    connectedUser: {}
+    connectedUser: undefined
 };
 
 export default function authenticationReducer(state = initialState, action) {
@@ -13,12 +13,13 @@ export default function authenticationReducer(state = initialState, action) {
             };
 
         case CONNECTED_USER:
-            const {firstName, lastName, id} = action.payload;
+            const {firstName, lastName, email, id} = action.payload;
             return {
                 ...state,
                 connectedUser: {
                     firstName: firstName,
                     lastName: lastName,
+                    email: email,
                     id: id
                 }
             };

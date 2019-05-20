@@ -1,6 +1,8 @@
 import axios from 'axios';
-import {ADD_USER, LIST_USERS} from "./action-type";
+import {ADD_USER, CONNECTED_USER, LIST_USERS} from "./action-type";
 import {parseError} from "./index";
+import {listUserOperations} from "./operations";
+import {listUserPermanentOperations} from "./operations-permanentes";
 
 export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
@@ -8,7 +10,7 @@ export function listUsers() {
     return function(dispatch) {
         const option = {
             method: "GET",
-            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs`,
+            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs/`,
             headers: {
                 "Authorization": 'bearer ' + localStorage.getItem("token")
             }
@@ -19,6 +21,32 @@ export function listUsers() {
                 payload: response.data.utilisateursDtos
             });
         })
+    };
+}
+
+export function getUserByEmail(email) {
+    return function(dispatch) {
+        const option = {
+            method: "GET",
+            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs?email=${email}`,
+            headers: {
+                "Authorization": 'bearer ' + localStorage.getItem("token")
+            }
+        };
+        axios(option).then(response => {
+            const {nom, prenom, email, id} = response.data;
+            dispatch({
+                type: CONNECTED_USER,
+                payload: {
+                    firstName: prenom,
+                    lastName: nom,
+                    email: email,
+                    id: id
+                }
+            });
+            dispatch(listUserOperations({id}));
+            dispatch(listUserPermanentOperations({id}));
+        });
     };
 }
 

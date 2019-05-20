@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
 import {signin, signout, isAuthenticated} from "../actions";
 import {withAuth} from '@okta/okta-react';
+import {withRouter} from "react-router";
 
 class Header extends Component {
 
@@ -20,7 +21,7 @@ class Header extends Component {
         if (this.props.isLoggedIn) {
             return (
                 <li className="nav-item">
-                    <Link to="#" onClick={() => this.props.signout(auth)} className="nav-link">Déconnexion {this.renderConnectedUser()}</Link>
+                    <Link to="#" onClick={() => this.props.signout(auth, this.props.history)} className="nav-link">Déconnexion {this.renderConnectedUser()}</Link>
                 </li>
             );
         } else {
@@ -72,4 +73,4 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withAuth(Header));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withAuth(Header)));

@@ -5,10 +5,10 @@ import {
     LIST_USER_OPERATION_PERMANENTE, MODIFY_PERMANENT_OPERATION,
     SET_PERMANENT_OPERATION_TO_MODIFY
 } from "./action-type";
-export const URL_SERVICE_UTILISATEUR = "http://192.168.99.100:30100";
+export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
 export function listUserPermanentOperations({id}) {
-    return function(dispatch) {
+    return (dispatch) => {
         const option = {
             method: "GET",
             url: `${URL_SERVICE_UTILISATEUR}/operations-permanentes/${id}`,
@@ -33,7 +33,7 @@ export function setPermanentOperationToModify(permanentOperationToModify) {
 }
 
 export function modifyPermanentOperation({id, label, day, price}) {
-    return function(dispatch) {
+    return (dispatch) => {
         const data = {
             id: id,
             intitule: label,
