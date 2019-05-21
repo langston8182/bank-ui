@@ -15,13 +15,13 @@ class IndexOperation extends Component {
     }
 
     addPermanentOperation({label, day, price}) {
-        const {currentUser, currentMonth, addOperation} = this.props;
+        const {currentMonth, addOperation} = this.props;
         const operation = {
             labelOperation: label,
             dayOfMonth: day,
             price: price
         };
-        addOperation(currentUser, currentMonth, operation);
+        addOperation(currentMonth, operation);
     };
 
 

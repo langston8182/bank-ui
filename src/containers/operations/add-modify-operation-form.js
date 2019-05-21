@@ -14,8 +14,8 @@ const FIELDS = {
 class AddModifyOperationForm extends Component {
     handleSubmit = (operation) => {
         if (this.props.operationToModify === undefined) {
-            const {addOperation, currentUser, currentMonth} = this.props;
-            addOperation(currentUser, currentMonth, operation);
+            const {addOperation, currentMonth} = this.props;
+            addOperation(currentMonth, operation);
         } else {
             const {modifyOperation, currentMonth} = this.props;
             modifyOperation(currentMonth, operation);
