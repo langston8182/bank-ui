@@ -8,11 +8,11 @@ import {
 } from "./action-type";
 export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
-export function listUserOperations({id}) {
+export function listUserOperations() {
     return function(dispatch) {
         const option = {
             method: "GET",
-            url: `${URL_SERVICE_UTILISATEUR}/operations/${id}`,
+            url: `${URL_SERVICE_UTILISATEUR}/operations`,
             headers: {
                 "Authorization": 'bearer ' + localStorage.getItem("token")
             }
@@ -90,7 +90,7 @@ export function setCurrentMonth(month) {
     }
 }
 
-export function addOperation({id}, currentMonth, {labelOperation, dayOfMonth, price}) {
+export function addOperation(currentMonth, {labelOperation, dayOfMonth, price}) {
     return function(dispatch) {
         const data = {
             intitule: labelOperation,
@@ -100,7 +100,7 @@ export function addOperation({id}, currentMonth, {labelOperation, dayOfMonth, pr
 
         const option = {
             method: "POST",
-            url: `${URL_SERVICE_UTILISATEUR}/operations/${id}`,
+            url: `${URL_SERVICE_UTILISATEUR}/operations`,
             data: data,
             headers: {
                 "Authorization": 'bearer ' + localStorage.getItem("token")
