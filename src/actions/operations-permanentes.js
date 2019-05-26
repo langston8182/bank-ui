@@ -7,11 +7,11 @@ import {
 } from "./action-type";
 export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
-export function listUserPermanentOperations() {
+export function listUserPermanentOperations(id) {
     return (dispatch) => {
         const option = {
             method: "GET",
-            url: `${URL_SERVICE_UTILISATEUR}/operations-permanentes`,
+            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs/${id}/operations-permanentes/`,
             headers: {
                 "Authorization": 'bearer ' + localStorage.getItem("token")
             }
@@ -35,7 +35,7 @@ export function setPermanentOperationToModify(permanentOperationToModify) {
 export function modifyPermanentOperation({id, label, day, price}) {
     return (dispatch) => {
         const data = {
-            id: id,
+            identifiant: id,
             intitule: label,
             jour: day,
             prix: price
@@ -43,7 +43,7 @@ export function modifyPermanentOperation({id, label, day, price}) {
 
         const option = {
             method: "PUT",
-            url: `${URL_SERVICE_UTILISATEUR}/operations-permanentes`,
+            url: `${URL_SERVICE_UTILISATEUR}/operations-permanentes/`,
             data: data,
             headers: {
                 "Authorization": 'bearer ' + localStorage.getItem("token")
@@ -61,13 +61,9 @@ export function modifyPermanentOperation({id, label, day, price}) {
 
 export function deletePermanentOperation({id}) {
     return function(dispatch) {
-        const data = {
-            id: id
-        };
         const option = {
             method: "DELETE",
-            url: `${URL_SERVICE_UTILISATEUR}/operations-permanentes/`,
-            data: data,
+            url: `${URL_SERVICE_UTILISATEUR}/operations-permanentes/${id}`,
             headers: {
                 "Authorization": 'bearer ' + localStorage.getItem("token")
             }
@@ -90,7 +86,7 @@ export function addPermanentOperation({id}, {day, label, price}) {
         };
         const option = {
             method: "POST",
-            url: `${URL_SERVICE_UTILISATEUR}/operations-permanentes`,
+            url: `${URL_SERVICE_UTILISATEUR}/operations-permanentes/`,
             data: data,
             headers: {
                 "Authorization": 'bearer ' + localStorage.getItem("token")

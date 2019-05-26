@@ -8,11 +8,11 @@ import {
 } from "./action-type";
 export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
 
-export function listUserOperations() {
+export function listUserOperations(id) {
     return function(dispatch) {
         const option = {
             method: "GET",
-            url: `${URL_SERVICE_UTILISATEUR}/operations`,
+            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs/${id}/operations/`,
             headers: {
                 "Authorization": 'bearer ' + localStorage.getItem("token")
             }
@@ -28,13 +28,9 @@ export function listUserOperations() {
 
 export function deleteOperation({id}) {
     return function(dispatch) {
-        const data = {
-            id: id
-        };
         const option = {
             method: "DELETE",
-            url: `${URL_SERVICE_UTILISATEUR}/operations/`,
-            data: data,
+            url: `${URL_SERVICE_UTILISATEUR}/operations/${id}`,
             headers: {
                 "Authorization": 'bearer ' + localStorage.getItem("token")
             }
@@ -52,7 +48,7 @@ export function deleteOperation({id}) {
 export function modifyOperation(currentMonth, {id, labelOperation, dayOfMonth, price}) {
     return function(dispatch) {
         const data = {
-            id: id,
+            identifiant: id,
             intitule: labelOperation,
             dateOperation: getCurrentDateWithMonthAndInputDay(currentMonth, dayOfMonth),
             prix: price
@@ -60,7 +56,7 @@ export function modifyOperation(currentMonth, {id, labelOperation, dayOfMonth, p
 
         const option = {
             method: "PUT",
-            url: `${URL_SERVICE_UTILISATEUR}/operations`,
+            url: `${URL_SERVICE_UTILISATEUR}/operations/`,
             data: data,
             headers: {
                 "Authorization": 'bearer ' + localStorage.getItem("token")
@@ -76,20 +72,6 @@ export function modifyOperation(currentMonth, {id, labelOperation, dayOfMonth, p
     }
 }
 
-export function setOperationToModify(operationToModify) {
-    return {
-        type: SET_OPERATION_TO_MODIFY,
-        payload: operationToModify
-    };
-}
-
-export function setCurrentMonth(month) {
-    return {
-        type: SET_CURRENT_MONTH,
-        payload: month
-    }
-}
-
 export function addOperation(currentMonth, {labelOperation, dayOfMonth, price}) {
     return function(dispatch) {
         const data = {
@@ -100,7 +82,7 @@ export function addOperation(currentMonth, {labelOperation, dayOfMonth, price}) 
 
         const option = {
             method: "POST",
-            url: `${URL_SERVICE_UTILISATEUR}/operations`,
+            url: `${URL_SERVICE_UTILISATEUR}/operations/`,
             data: data,
             headers: {
                 "Authorization": 'bearer ' + localStorage.getItem("token")
@@ -113,6 +95,20 @@ export function addOperation(currentMonth, {labelOperation, dayOfMonth, price}) 
             })
         });
     };
+}
+
+export function setOperationToModify(operationToModify) {
+    return {
+        type: SET_OPERATION_TO_MODIFY,
+        payload: operationToModify
+    };
+}
+
+export function setCurrentMonth(month) {
+    return {
+        type: SET_CURRENT_MONTH,
+        payload: month
+    }
 }
 
 function getCurrentDateWithInputDay(day) {

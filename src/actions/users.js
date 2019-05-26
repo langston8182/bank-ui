@@ -18,7 +18,7 @@ export function listUsers() {
         axios(option).then(response => {
             dispatch({
                 type: LIST_USERS,
-                payload: response.data.utilisateursDtos
+                payload: response.data.utilisateurDtos
             });
         })
     };
@@ -34,18 +34,19 @@ export function getUserByEmail(email) {
             }
         };
         axios(option).then(response => {
-            const {nom, prenom, email, id} = response.data;
+            const {nom, prenom, email, identifiant} = response.data;
             dispatch({
                 type: CONNECTED_USER,
                 payload: {
                     firstName: prenom,
                     lastName: nom,
                     email: email,
-                    id: id
+                    id: identifiant
                 }
             });
-            dispatch(listUserOperations({id}));
-            dispatch(listUserPermanentOperations({id}));
+
+            dispatch(listUserOperations(identifiant));
+            dispatch(listUserPermanentOperations(identifiant));
         });
     };
 }
@@ -53,7 +54,7 @@ export function getUserByEmail(email) {
 export function deleteUser({id}, history) {
     return function(dispatch) {
         const data = {
-            id: id
+            identifiant: id
         };
         const option = {
             method: "DELETE",
@@ -77,11 +78,11 @@ export function modifyUser({lastName, firstName, email, id}, history) {
             nom: lastName,
             prenom: firstName,
             email: email,
-            id: id
+            identifiant: id
         };
         const option = {
             method: "PUT",
-            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs`,
+            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs/`,
             data: data,
             headers: {
                 "Authorization": "bearer " + localStorage.getItem("token"),

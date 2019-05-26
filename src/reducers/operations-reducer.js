@@ -19,7 +19,7 @@ export default function listUserOperations(state = initialState, action) {
             let operations = [];
             action.payload.map(operation => (
                 operations.push({
-                    id: operation.id,
+                    id: operation.identifiant,
                     labelOperation: operation.intitule,
                     dateOperation: operation.dateOperation,
                     price: operation.prix
@@ -27,12 +27,12 @@ export default function listUserOperations(state = initialState, action) {
             ));
             return {
                 ...state,
-                operations: operations.map(operation => operation)
+                operations: operations
             };
 
         case ADD_OPERATION:
             const operation = {
-                id: action.payload.id,
+                id: action.payload.identifiant,
                 labelOperation: action.payload.intitule,
                 dateOperation: action.payload.dateOperation,
                 price: action.payload.prix
@@ -55,7 +55,7 @@ export default function listUserOperations(state = initialState, action) {
 
         case MODIFY_OPERATION:
             const operationModify = {
-                id: action.payload.id,
+                id: action.payload.identifiant,
                 labelOperation: action.payload.intitule,
                 dateOperation: action.payload.dateOperation,
                 price: action.payload.prix
