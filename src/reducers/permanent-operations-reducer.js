@@ -18,7 +18,7 @@ export default function permanentOperations(state = initialState, action) {
             let permanentOperations = [];
             action.payload.map(permanentOperation => (
                 permanentOperations.push({
-                    id: permanentOperation.id,
+                    id: permanentOperation.identifiant,
                     label: permanentOperation.intitule,
                     day: permanentOperation.jour,
                     price: permanentOperation.prix
@@ -26,12 +26,12 @@ export default function permanentOperations(state = initialState, action) {
             ));
             return {
                 ...state,
-                permanentOperations: permanentOperations.map(permanentOperation => permanentOperation)
+                permanentOperations: permanentOperations
             };
 
         case ADD_PERMANENT_OPERATION:
             const permanentOperation = {
-                id: action.payload.id,
+                id: action.payload.identifiant,
                 day: action.payload.jour,
                 price: action.payload.prix,
                 label: action.payload.intitule
@@ -43,7 +43,7 @@ export default function permanentOperations(state = initialState, action) {
 
         case MODIFY_PERMANENT_OPERATION:
             const permanentOperationModify = {
-                id: action.payload.id,
+                id: action.payload.identifiant,
                 label: action.payload.intitule,
                 day: action.payload.jour,
                 price: action.payload.prix
