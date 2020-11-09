@@ -16,7 +16,7 @@ const UserListItem = (props) => {
             <td>{email}</td>
             <td>
                 <div className="btn-toolbar float-right">
-                    <Link to={`${match.url}/modify-user-form/${id}`}>
+                    <Link to={`/users/modify-user-form/${id}`}>
                         <button className="btn btn-info btn-raised btn-space">Modifier</button>
                     </Link>
                     <button className="btn btn-danger btn-raised"

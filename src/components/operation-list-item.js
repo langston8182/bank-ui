@@ -1,7 +1,7 @@
 import React from 'react';
 
 const OperationListItem = (props) => {
-    const {operation: {id, labelOperation, dateOperation, price}, operationToModify} = props;
+    const {operation: {id, intitule, dateOperation, prix}, operationToModify} = props;
 
     function deleteOperation(operation) {
          props.deleteOperationCallBack(operation);
@@ -16,7 +16,7 @@ const OperationListItem = (props) => {
     }
 
     function getClassOfRow() {
-        let classRow = price > 0 ? "table-sm table-success" : "table-sm table-danger";
+        let classRow = prix > 0 ? "table-sm table-success" : "table-sm table-danger";
         if (operationToModify && operationToModify.id === id) {
             classRow = "table-sm table-active";
         }
@@ -42,8 +42,8 @@ const OperationListItem = (props) => {
                 </span>
             </td>
             <td>{dateOperation}</td>
-            <td>{labelOperation}</td>
-            <td>{price}</td>
+            <td>{intitule}</td>
+            <td>{prix}</td>
         </tr>
     );
 };

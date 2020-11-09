@@ -1,27 +1,28 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {signup} from "../actions/signup";
 import {Field, reduxForm} from "redux-form";
-import {signin} from "../actions";
 import * as validation from "../validations/index";
-import {Link} from "react-router-dom";
 
 const FIELDS = {
     email: "email",
-    password: "password"
+    login: "login",
+    password: "password",
+    secondPassword: "secondPassword"
 };
 
-class SigninForm extends Component {
-    handleSubmit = (credentials) => {
-        this.props.signin(credentials, this.props.history);
+class SignupForm extends Component {
+    handleSubmit = user => {
+        this.props.signup(user, this.props.history);
     };
 
-    renderInputComponent = field => {
+    renderAddUserComponent = field => {
         return (
             <fieldset className="col-md-4 form-group">
                 <label className="bmd-label-floating">
                     {field.label}
                 </label>
-                <input type={field.type} {...field.input} className="form-control"/>
+                <input type={field.type} {...field.input} className="form-control" />
                 {
                     field.meta.touched && field.meta.error &&
                     <span className="error">{field.meta.error}</span>
@@ -36,12 +37,20 @@ class SigninForm extends Component {
         return (
             <form onSubmit={handleSubmit(this.handleSubmit)}>
                 <div className="row justify-content-md-center">
-                    <h1>Connexion</h1>
+                    <h1>Inscription</h1>
+                </div>
+                <div className="row justify-content-md-center">
+                    <Field
+                        name={FIELDS.login}
+                        component={this.renderAddUserComponent}
+                        type="text"
+                        label="login"
+                    />
                 </div>
                 <div className="row justify-content-md-center">
                     <Field
                         name={FIELDS.email}
-                        component={this.renderInputComponent}
+                        component={this.renderAddUserComponent}
                         type="text"
                         label="email"
                     />
@@ -49,17 +58,22 @@ class SigninForm extends Component {
                 <div className="row justify-content-md-center">
                     <Field
                         name={FIELDS.password}
-                        component={this.renderInputComponent}
+                        component={this.renderAddUserComponent}
                         type="password"
-                        label="password"
+                        label="Mot de passe"
                     />
                 </div>
                 <div className="row justify-content-md-center">
-                    <Link to={"/forgotpassword"} className="nav-link">Mot de passe oublié ?</Link>
+                    <Field
+                        name={FIELDS.secondPassword}
+                        component={this.renderAddUserComponent}
+                        type="password"
+                        label="Mot de passe (Répétez)"
+                    />
                 </div>
                 <div className="row justify-content-md-center">
                     <button type="submit" className="btn btn-primary btn-raised">
-                        Connexion
+                        Ajouter
                     </button>
                 </div>
             </form>
@@ -70,23 +84,25 @@ class SigninForm extends Component {
 function validate(formValues) {
     const errors = {};
     errors.email = validation.validateEmail(formValues.email);
+    errors.login = validation.validateNotEmpty(formValues.login);
     errors.password = validation.validateNotEmpty(formValues.password);
+    errors.secondPassword = validation.validateEqual(formValues.password, formValues.secondPassword);
 
     return errors;
 }
 
 const mapDispatchToProps = {
-    signin
+    signup
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = () => {
     return {}
 };
 
-const signinForm = reduxForm({
-    form: "signin",
+const addUserForm = reduxForm({
+    form: "signup",
     fields: Object.keys(FIELDS),
     validate
-})(SigninForm);
+})(SignupForm);
 
-export default connect(mapStateToProps, mapDispatchToProps)(signinForm);
+export default connect(mapStateToProps, mapDispatchToProps)(addUserForm);

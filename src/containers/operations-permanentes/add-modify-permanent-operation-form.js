@@ -6,9 +6,9 @@ import {addPermanentOperation, modifyPermanentOperation} from "../../actions/ope
 import {retrievePermanentOperationToModifyInForm} from "../../selectors";
 
 const FIELDS = {
-    day: "day",
-    label: "label",
-    price: "price",
+    jour: "jour",
+    intitule: "intitule",
+    prix: "prix",
 };
 
 class AddModifyPermanentOperationForm extends Component {
@@ -43,19 +43,19 @@ class AddModifyPermanentOperationForm extends Component {
                 </div>
                 <form onSubmit={handleSubmit(this.handleSubmit)} className="form-inline">
                     <Field
-                        name={FIELDS.day}
+                        name={FIELDS.jour}
                         component={this.renderAddOperationComponent}
                         type="text"
                         label="Jour du mois"
                     />
                     <Field
-                        name={FIELDS.label}
+                        name={FIELDS.intitule}
                         component={this.renderAddOperationComponent}
                         type="text"
                         label="Libelle"
                     />
                     <Field
-                        name={FIELDS.price}
+                        name={FIELDS.prix}
                         component={this.renderAddOperationComponent}
                         type="text"
                         label="Prix"
@@ -81,7 +81,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => {
     return {
-        currentUser: state.authentication.connectedUser,
+        currentUser: state.auth.user,
         initialValues: retrievePermanentOperationToModifyInForm(state),
         permanentOperationToModify: state.permanentOperation.permanentOperationToModify,
     }

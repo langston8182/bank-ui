@@ -3,51 +3,35 @@ import Header from "../containers/header";
 import {Route, Switch} from "react-router-dom";
 import Home from "./home";
 import Erreur from "../containers/error";
-import Signout from "../containers/signout"
 import Users from "../containers/users";
 import AddUserForm from "../containers/add-user-form";
+import SigninForm from "../containers/signin-form";
+import SignupForm from '../containers/signup-form';
+import ForgotPassword from '../containers/forgot-password-form';
+import ForgotPasswordSucces from "./forgot-password-succes";
+import ForgotPasswordVerification from '../containers/forgot-password-verification-form';
 import ModifyUserForm from "../containers/modify-user-form";
 import IndexOperation from "../containers/operations/index";
 import IndexOperationPermanente from "../containers/operations-permanentes/index";
-import {ImplicitCallback, SecureRoute, withAuth} from "@okta/okta-react";
-import {setAuthentication} from "../actions";
-import {getUserByEmail} from "../actions/users";
 import {connect} from "react-redux";
+import {Auth} from 'aws-amplify';
+import {changeAuth} from '../actions'
+import RequireAuthentication from '../helpers/require-authentication';
+import ChangePassword from "../containers/change-password-form";
 
 require("../index.css");
 
 
 class App extends Component {
 
-    async componentWillMount() {
-        this.authenticate();
-    }
-
-
-    async componentDidUpdate() {
-        this.authenticate();
-    }
-
-    async authenticate() {
-        const isAuthenticated = await this.props.auth.isAuthenticated();
-
-        if (isAuthenticated && !this.props.currentUser) {
-            const accessToken = await this.getAccessToken();
-            const {email} = await this.getUserInfo();
-            localStorage.setItem("token", accessToken);
-            this.props.setAuthentication(true);
-            this.props.getUserByEmail(email);
-        } else if (!isAuthenticated && localStorage.getItem("token")) {
-            localStorage.removeItem("token");
+    async componentDidMount() {
+        try {
+            await Auth.currentSession();
+            const user = await Auth.currentAuthenticatedUser();
+            this.props.changeAuth(user, true);
+        } catch(error) {
+            console.log(error);
         }
-    }
-
-    async getAccessToken() {
-        return await this.props.auth.getAccessToken();
-    }
-
-    async getUserInfo() {
-        return await this.props.auth.getUser();
     }
 
     render() {
@@ -58,13 +42,17 @@ class App extends Component {
               <div className="container body_content">
                   <Switch >
                       <Route exact path="/" component={Home} />
-                      <Route exact path="/signout" component={Signout} />
-                      <SecureRoute exact path="/users" component={Users} />
-                      <SecureRoute exact path="/users/modify-user-form/:id" component={ModifyUserForm} />
-                      <SecureRoute exact path="/add-user-form" component={AddUserForm} />
-                      <SecureRoute exact path="/operations" component={IndexOperation} />
-                      <Route exact path="/operations-permanentes" component={IndexOperationPermanente} />
-                      <Route exact path="/implicit/callback" component={ImplicitCallback} />
+                      <Route exact path="/signin" component={SigninForm} />
+                      <Route exact path="/signup" component={SignupForm} />
+                      <Route exact path="/forgotpassword" component={ForgotPassword} />
+                      <Route exact path="/forgotpasswordverification" component={ForgotPasswordVerification} />
+                      <Route exact path="/forgotpasswordsucces" component={ForgotPasswordSucces} />
+                      <Route exact path="/changepassword" component={ChangePassword} />
+                      <Route exact path="/users" component={RequireAuthentication(Users)} />
+                      <Route exact path="/users/modify-user-form/:id" component={RequireAuthentication(ModifyUserForm)} />
+                      <Route exact path="/add-user-form" component={RequireAuthentication(AddUserForm)} />
+                      <Route exact path="/operations" component={RequireAuthentication(IndexOperation)} />
+                      <Route exact path="/operations-permanentes" component={RequireAuthentication(IndexOperationPermanente)} />
                   </Switch>
               </div>
           </div>
@@ -73,14 +61,14 @@ class App extends Component {
 }
 
 const mapDispatchToProps = {
-    setAuthentication,
-    getUserByEmail
+    changeAuth
 };
 
 const mapStateToProps = (state) => {
     return {
-        currentUser: state.authentication.connectedUser,
+        user: state.auth.user,
+        isAuthenticated: state.auth.isAuthenticated
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withAuth(App));
+export default connect(mapStateToProps, mapDispatchToProps)(App);

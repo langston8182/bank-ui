@@ -11,7 +11,7 @@ export default function usersReducer(state = initialState, action) {
                     firstName: user.prenom,
                     lastName: user.nom,
                     email: user.email,
-                    id: user.identifiant
+                    id: user.id
                 })
             ));
             return users.map(user => user);

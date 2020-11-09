@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import {
     ADD_OPERATION,
     DELETE_OPERATION,
@@ -6,21 +7,18 @@ import {
     SET_OPERATION_TO_MODIFY,
     MODIFY_OPERATION, SET_CURRENT_MONTH
 } from "./action-type";
-export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
+export const URL_SERVICE_UTILISATEUR = "https://3txyvppun4.execute-api.us-east-1.amazonaws.com/prod";
 
-export function listUserOperations(id) {
+export function listUserOperations(idUtilisateur) {
     return function(dispatch) {
         const option = {
             method: "GET",
-            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs/${id}/operations/`,
-            headers: {
-                "Authorization": 'bearer ' + localStorage.getItem("token")
-            }
+            url: `${URL_SERVICE_UTILISATEUR}/operations?idUtilisateur=${idUtilisateur}`,
         };
         axios(option).then(response => {
             dispatch({
                 type: LIST_USER_OPERATION,
-                payload: response.data.operationDtos
+                payload: response.data
             });
         });
     }
@@ -31,9 +29,6 @@ export function deleteOperation({id}) {
         const option = {
             method: "DELETE",
             url: `${URL_SERVICE_UTILISATEUR}/operations/${id}`,
-            headers: {
-                "Authorization": 'bearer ' + localStorage.getItem("token")
-            }
         };
         axios(option).then(() => {
             dispatch({
@@ -45,39 +40,45 @@ export function deleteOperation({id}) {
     }
 }
 
-export function modifyOperation(currentMonth, {id, labelOperation, dayOfMonth, price}) {
+export function modifyOperation(currentMonth, {id, intitule, dayOfMonth, prix}) {
     return function(dispatch) {
         const data = {
-            identifiant: id,
-            intitule: labelOperation,
+            intitule,
             dateOperation: getCurrentDateWithMonthAndInputDay(currentMonth, dayOfMonth),
-            prix: price
+            prix
         };
 
         const option = {
             method: "PUT",
-            url: `${URL_SERVICE_UTILISATEUR}/operations/`,
+            url: `${URL_SERVICE_UTILISATEUR}/operations/${id}`,
             data: data,
             headers: {
-                "Authorization": 'bearer ' + localStorage.getItem("token")
+                "Content-Type": "application/json"
             }
         };
         axios(option).then(response => {
             dispatch({
                 type: MODIFY_OPERATION,
-                payload: response.data
+                payload: {
+                    id,
+                    intitule,
+                    dateOperation: data.dateOperation.toISOString(),
+                    prix
+                }
             });
             dispatch(setOperationToModify(undefined));
         });
     }
 }
 
-export function addOperation(currentMonth, {labelOperation, dayOfMonth, price}) {
+export function addOperation(idUtilisateur, currentMonth, {intitule, dayOfMonth, prix}) {
     return function(dispatch) {
         const data = {
-            intitule: labelOperation,
-            dateOperation: getCurrentDateWithMonthAndInputDay(currentMonth, dayOfMonth),
-            prix: price
+            id: uuidv4(),
+            idUtilisateur,
+            intitule,
+            dateOperation: getCurrentDateWithMonthAndInputDay(currentMonth, dayOfMonth).toISOString(),
+            prix
         };
 
         const option = {
@@ -85,13 +86,13 @@ export function addOperation(currentMonth, {labelOperation, dayOfMonth, price}) 
             url: `${URL_SERVICE_UTILISATEUR}/operations/`,
             data: data,
             headers: {
-                "Authorization": 'bearer ' + localStorage.getItem("token")
+                "content-type": "application/json"
             }
         };
-        axios(option).then(response => {
+        axios(option).then(() => {
             dispatch({
                 type: ADD_OPERATION,
-                payload: response.data
+                payload: data
             })
         });
     };

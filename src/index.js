@@ -6,8 +6,16 @@ import thunk from 'redux-thunk';
 import reducers from './reducers';
 import {BrowserRouter} from 'react-router-dom';
 import App from './components/App';
-import {setAuthentication} from "./actions";
-import {Security} from "@okta/okta-react";
+import Amplify from 'aws-amplify';
+
+Amplify.configure({
+    Auth: {
+        mandatorySignIn: true,
+        region: "us-east-1",
+        userPoolId: "us-east-1_QB7RXakvf",
+        userPoolWebClientId: "7b2ln0fib611qpfv98rim9skml"
+    }
+});
 
 const invariant = require("redux-immutable-state-invariant").default();
 
@@ -18,23 +26,10 @@ const store = createStoreWithMiddleware(
     window.__REDUX_DEVTOOLS_EXTENSION__ &&
     window.__REDUX_DEVTOOLS_EXTENSION__());
 
-const token = localStorage.getItem("token");
-if (token) {
-    store.dispatch(setAuthentication(true));
-}
-
-const oktaConfig = {
-    issuer: `https://dev-847930.okta.com/oauth2/default`,
-    redirect_uri: `http://localhost:3000/implicit/callback`,
-    client_id: "0oalksrvhklabos4i356",
-};
-
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
-            <Security {...oktaConfig}>
-                <App />
-            </Security>
+            <App/>
         </BrowserRouter>
     </Provider>,
     document.querySelector('#root'));

@@ -12,10 +12,11 @@ class Error extends Component {
 
     render() {
         return (
-            this.props.error &&
-            <div className="alert alert-danger" role="alert">
-                {this.props.error}
-            </div>
+            this.props.error && (
+                <div id="error" className="alert alert-danger" role="alert">
+                    {this.props.error}
+                </div>
+            )
         );
     }
 }

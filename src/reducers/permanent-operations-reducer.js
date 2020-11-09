@@ -17,44 +17,26 @@ export default function permanentOperations(state = initialState, action) {
         case LIST_USER_OPERATION_PERMANENTE:
             let permanentOperations = [];
             action.payload.map(permanentOperation => (
-                permanentOperations.push({
-                    id: permanentOperation.identifiant,
-                    label: permanentOperation.intitule,
-                    day: permanentOperation.jour,
-                    price: permanentOperation.prix
-                })
+                permanentOperations.push(permanentOperation)
             ));
             return {
                 ...state,
-                permanentOperations: permanentOperations
+                permanentOperations
             };
 
         case ADD_PERMANENT_OPERATION:
-            const permanentOperation = {
-                id: action.payload.identifiant,
-                day: action.payload.jour,
-                price: action.payload.prix,
-                label: action.payload.intitule
-            };
             return {
                 ...state,
-                permanentOperations: [...state.permanentOperations, permanentOperation]
+                permanentOperations: [...state.permanentOperations, action.payload]
             };
 
         case MODIFY_PERMANENT_OPERATION:
-            const permanentOperationModify = {
-                id: action.payload.identifiant,
-                label: action.payload.intitule,
-                day: action.payload.jour,
-                price: action.payload.prix
-            };
-
             return {
                 ...state,
                 permanentOperations: replaceObjectByAnotherInArrayByIndex(
                     lodash.findIndex(state.permanentOperations, {id: action.payload.id}),
                     state.permanentOperations,
-                    permanentOperationModify)
+                    action.payload)
             };
 
         case DELETE_PERMANENT_OPERATION:

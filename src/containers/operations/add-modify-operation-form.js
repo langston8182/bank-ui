@@ -7,15 +7,16 @@ import {retrieveOperationToModifyInForm} from "../../selectors";
 
 const FIELDS = {
     dayOfMonth: "dayOfMonth",
-    labelOperation: "labelOperation",
-    price: "price",
+    intitule: "intitule",
+    prix: "prix",
 };
 
 class AddModifyOperationForm extends Component {
     handleSubmit = (operation) => {
         if (this.props.operationToModify === undefined) {
             const {addOperation, currentMonth} = this.props;
-            addOperation(currentMonth, operation);
+            const idUtilisateur = this.props.user.id;
+            addOperation(idUtilisateur, currentMonth, operation);
         } else {
             const {modifyOperation, currentMonth} = this.props;
             modifyOperation(currentMonth, operation);
@@ -48,13 +49,13 @@ class AddModifyOperationForm extends Component {
                         label="Jour du mois"
                     />
                     <Field
-                        name={FIELDS.labelOperation}
+                        name={FIELDS.intitule}
                         component={this.renderAddOperationComponent}
                         type="text"
                         label="Libelle"
                     />
                     <Field
-                        name={FIELDS.price}
+                        name={FIELDS.prix}
                         component={this.renderAddOperationComponent}
                         type="text"
                         label="Prix"
@@ -80,10 +81,10 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => {
     return {
-        currentUser: state.authentication.connectedUser,
         initialValues: retrieveOperationToModifyInForm(state),
         operationToModify: state.operation.operationToModify,
-        currentMonth: state.operation.currentMonth
+        currentMonth: state.operation.currentMonth,
+        user: state.auth.user
     }
 };
 

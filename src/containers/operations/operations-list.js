@@ -32,7 +32,7 @@ class OperationsList extends Component {
     calculateTotal = () => {
         const {operations} = this.props;
         return operations.reduce(
-            (acc, operation2) => acc + operation2.price, 0);
+            (acc, operation2) => acc + parseInt(operation2.prix), 0);
     };
 
     render() {
@@ -68,7 +68,6 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => {
     return {
-        currentUser: state.authentication.connectedUser,
         operations: retrieveAllOperationsByMonth(state),
         operationToModify: retrieveOperationToModifyInForm(state)
     }

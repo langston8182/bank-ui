@@ -1,10 +1,12 @@
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import {ADD_USER, CONNECTED_USER, LIST_USERS} from "./action-type";
-import {parseError} from "./index";
+import parseError from "./errors";
 import {listUserOperations} from "./operations";
 import {listUserPermanentOperations} from "./operations-permanentes";
+import {Auth} from "aws-amplify";
 
-export const URL_SERVICE_UTILISATEUR = "http://localhost:8100";
+export const URL_SERVICE_UTILISATEUR = "https://3txyvppun4.execute-api.us-east-1.amazonaws.com/prod";
 
 export function listUsers() {
     return function(dispatch) {
@@ -12,13 +14,13 @@ export function listUsers() {
             method: "GET",
             url: `${URL_SERVICE_UTILISATEUR}/utilisateurs/`,
             headers: {
-                "Authorization": 'bearer ' + localStorage.getItem("token")
+                "Content-Type": "application/json"
             }
         };
         axios(option).then(response => {
             dispatch({
                 type: LIST_USERS,
-                payload: response.data.utilisateurDtos
+                payload: response.data
             });
         })
     };
@@ -53,15 +55,10 @@ export function getUserByEmail(email) {
 
 export function deleteUser({id}, history) {
     return function(dispatch) {
-        const data = {
-            identifiant: id
-        };
         const option = {
             method: "DELETE",
-            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs`,
-            data: data,
+            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs/${id}`,
             headers: {
-                "Authorization": "bearer " + localStorage.getItem("token"),
                 "content-type": "application/json"
             }
         };
@@ -82,10 +79,9 @@ export function modifyUser({lastName, firstName, email, id}, history) {
         };
         const option = {
             method: "PUT",
-            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs/`,
+            url: `${URL_SERVICE_UTILISATEUR}/utilisateurs/${id}`,
             data: data,
             headers: {
-                "Authorization": "bearer " + localStorage.getItem("token"),
                 "content-type": "application/json"
             }
         };
@@ -96,12 +92,24 @@ export function modifyUser({lastName, firstName, email, id}, history) {
 }
 
 export function addUser({lastName, firstName, email, password}, history) {
-    return function(dispatch) {
+    return async function (dispatch) {
+        try {
+            const signUpResponse = await Auth.signUp({
+                username: lastName,
+                password: password,
+                attributes: {
+                    email: email
+                }
+            });
+        } catch (err) {
+            console.log(err.message);
+        }
+
         const data = {
+            id: uuidv4(),
             nom: lastName,
             prenom: firstName,
-            email: email,
-            motDePasse: password
+            email: email
         };
 
         const option = {
@@ -109,11 +117,9 @@ export function addUser({lastName, firstName, email, password}, history) {
             url: `${URL_SERVICE_UTILISATEUR}/utilisateurs`,
             data: data,
             headers: {
-                "Authorization": "bearer " + localStorage.getItem("token"),
                 "content-type": "application/json"
             }
         };
-
         axios(option).then(response => {
             dispatch({
                 type: ADD_USER,

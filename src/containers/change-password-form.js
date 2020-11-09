@@ -1,20 +1,16 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from "redux-form";
-import {signin} from "../actions";
-import * as validation from "../validations/index";
-import {Link} from "react-router-dom";
+import * as validation from "../validations";
+import {changePassword} from '../actions/changepassword';
 
 const FIELDS = {
-    email: "email",
-    password: "password"
-};
+    oldPassword: "oldPassword",
+    newPassword: "newPassword",
+    newPasswordConfirm: "newPasswordConfirm"
+}
 
-class SigninForm extends Component {
-    handleSubmit = (credentials) => {
-        this.props.signin(credentials, this.props.history);
-    };
-
+class ChangePassword extends Component {
     renderInputComponent = field => {
         return (
             <fieldset className="col-md-4 form-group">
@@ -30,63 +26,73 @@ class SigninForm extends Component {
         );
     };
 
+    handleSubmit = (passwordValues) => {
+        this.props.changePassword(passwordValues, this.props.history);
+    };
+
     render() {
         const {handleSubmit} = this.props;
 
         return (
             <form onSubmit={handleSubmit(this.handleSubmit)}>
                 <div className="row justify-content-md-center">
-                    <h1>Connexion</h1>
+                    <h1>Modification de votre mot de passe</h1>
                 </div>
                 <div className="row justify-content-md-center">
                     <Field
-                        name={FIELDS.email}
-                        component={this.renderInputComponent}
-                        type="text"
-                        label="email"
-                    />
-                </div>
-                <div className="row justify-content-md-center">
-                    <Field
-                        name={FIELDS.password}
+                        name={FIELDS.oldPassword}
                         component={this.renderInputComponent}
                         type="password"
-                        label="password"
+                        label="Ancien mot de passe"
                     />
                 </div>
                 <div className="row justify-content-md-center">
-                    <Link to={"/forgotpassword"} className="nav-link">Mot de passe oublié ?</Link>
+                    <Field
+                        name={FIELDS.newPassword}
+                        component={this.renderInputComponent}
+                        type="password"
+                        label="Nouveau mot de passe"
+                    />
+                </div>
+                <div className="row justify-content-md-center">
+                    <Field
+                        name={FIELDS.newPasswordConfirm}
+                        component={this.renderInputComponent}
+                        type="password"
+                        label="Nouveau mot de passe (confirmez)"
+                    />
                 </div>
                 <div className="row justify-content-md-center">
                     <button type="submit" className="btn btn-primary btn-raised">
-                        Connexion
+                        Valider
                     </button>
                 </div>
             </form>
-        );
+        )
     }
 }
 
 function validate(formValues) {
     const errors = {};
-    errors.email = validation.validateEmail(formValues.email);
-    errors.password = validation.validateNotEmpty(formValues.password);
+    errors.oldPassword = validation.validateNotEmpty(formValues.oldPassword);
+    errors.newPassword = validation.validateNotEmpty(formValues.newPassword);
+    errors.newPasswordConfirm = validation.validateEqual(formValues.newPassword, formValues.newPasswordConfirm);
 
     return errors;
 }
 
 const mapDispatchToProps = {
-    signin
-};
+    changePassword
+}
 
 const mapStateToProps = (state) => {
     return {}
-};
+}
 
-const signinForm = reduxForm({
-    form: "signin",
+const changePasswordForm = reduxForm({
+    form: 'changePassword',
     fields: Object.keys(FIELDS),
     validate
-})(SigninForm);
+})(ChangePassword);
 
-export default connect(mapStateToProps, mapDispatchToProps)(signinForm);
+export default connect(mapStateToProps, mapDispatchToProps)(changePasswordForm);

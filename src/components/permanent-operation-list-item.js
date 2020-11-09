@@ -1,7 +1,7 @@
 import React from 'react';
 
 const PermanentOperationListItem = props => {
-    const {permanentOperation: {id, label, day, price},
+    const {permanentOperation: {id, intitule, jour, prix},
         permanentOperationToModify} = props;
 
     function deletePermanentOperation(permanentOperation) {
@@ -42,9 +42,9 @@ const PermanentOperationListItem = props => {
                   </button>
                 </span>
             </td>
-            <td>{day}</td>
-            <td>{label}</td>
-            <td>{price}</td>
+            <td>{jour}</td>
+            <td>{intitule}</td>
+            <td>{prix}</td>
         </tr>
     );
 };

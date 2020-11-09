@@ -4,7 +4,7 @@ class Home extends Component {
     render() {
         return (
             <div>
-                Accueil
+                Bienvenue sur l'application bancaire
             </div>
         );
     }

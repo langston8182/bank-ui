@@ -1,6 +1,11 @@
 export const CONNECTED_USER = "CONNECTED_USER";
 export const SET_AUTHENTICATION = "SET_AUTHENTICATION";
+export const SIGN_IN = "SIGN_IN";
+export const SIGN_OUT = "SIGN_OUT";
+export const SIGN_UP = "SIGN_UP";
+export const CHANGE_AUTH = "CHANGE_AUTH";
 export const PARSE_ERROR = "PARSE_ERROR";
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
 export const RESET_ERROR = "RESET_ERROR";
 export const LIST_USERS = "LIST_USERS";
 export const ADD_USER = "ADD_USER";

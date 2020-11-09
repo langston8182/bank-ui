@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from "redux-form";
-import {signin} from "../actions";
-import * as validation from "../validations/index";
-import {Link} from "react-router-dom";
+import * as validation from "../validations";
+import {forgotPasswordVerificaton} from "../actions/forgotpasswordverification";
 
 const FIELDS = {
     email: "email",
+    code: "code",
     password: "password"
 };
 
-class SigninForm extends Component {
-    handleSubmit = (credentials) => {
-        this.props.signin(credentials, this.props.history);
+class ForgotPasswordVerification extends Component {
+    handleSubmit = (verification) => {
+        this.props.forgotPasswordVerificaton(verification, this.props.history);
     };
 
     renderInputComponent = field => {
@@ -36,7 +36,15 @@ class SigninForm extends Component {
         return (
             <form onSubmit={handleSubmit(this.handleSubmit)}>
                 <div className="row justify-content-md-center">
-                    <h1>Connexion</h1>
+                    <h1>Nouveau mot de passe</h1>
+                </div>
+                <div className="row justify-content-md-center">
+                    <Field
+                        name={FIELDS.code}
+                        component={this.renderInputComponent}
+                        type="text"
+                        label="Code de vérification"
+                    />
                 </div>
                 <div className="row justify-content-md-center">
                     <Field
@@ -51,42 +59,40 @@ class SigninForm extends Component {
                         name={FIELDS.password}
                         component={this.renderInputComponent}
                         type="password"
-                        label="password"
+                        label="Mot de passe"
                     />
                 </div>
                 <div className="row justify-content-md-center">
-                    <Link to={"/forgotpassword"} className="nav-link">Mot de passe oublié ?</Link>
-                </div>
-                <div className="row justify-content-md-center">
                     <button type="submit" className="btn btn-primary btn-raised">
-                        Connexion
+                        Valider
                     </button>
                 </div>
             </form>
-        );
+        )
     }
 }
 
 function validate(formValues) {
     const errors = {};
     errors.email = validation.validateEmail(formValues.email);
+    errors.code = validation.validateNotEmpty(formValues.code);
     errors.password = validation.validateNotEmpty(formValues.password);
 
     return errors;
 }
 
 const mapDispatchToProps = {
-    signin
-};
+    forgotPasswordVerificaton
+}
 
 const mapStateToProps = (state) => {
     return {}
-};
+}
 
-const signinForm = reduxForm({
-    form: "signin",
+const forgotPasswordVerificationForm = reduxForm({
+    form: "forgotPasswordVerification",
     fields: Object.keys(FIELDS),
     validate
-})(SigninForm);
+})(ForgotPasswordVerification);
 
-export default connect(mapStateToProps, mapDispatchToProps)(signinForm);
+export default connect(mapStateToProps, mapDispatchToProps)(forgotPasswordVerificationForm)

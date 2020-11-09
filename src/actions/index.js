@@ -1,50 +1,57 @@
-import {PARSE_ERROR, RESET_ERROR, SET_AUTHENTICATION} from "./action-type";
+import {PARSE_ERROR, RESET_ERROR, SIGN_IN, SIGN_OUT, CHANGE_AUTH} from "./action-type";
+import {Auth} from "aws-amplify";
+import {listUserOperations} from "./operations";
+import {listUserPermanentOperations} from './operations-permanentes';
+import parseError from './errors';
 
-export function setAuthentication(isLoggedIn) {
-    return function (dispatch) {
+export function changeAuth(user, isAuthenticated) {
+    return function(dispatch) {
+        const payload = {
+            user: {
+                id: user.attributes.sub,
+                nom: user.username,
+                email: user.attributes.email
+            },
+            isAuthenticated
+        };
         dispatch({
-            type: SET_AUTHENTICATION,
-            payload: {
-                isLoggedIn: isLoggedIn
-            }
+            type: CHANGE_AUTH,
+            payload
         });
+        dispatch(listUserOperations(payload.user.id));
+        dispatch(listUserPermanentOperations(user.attributes.sub));
     };
 }
 
-export function isAuthenticated(auth) {
-    return function (dispatch) {
-        auth.isAuthenticated().then(response => {
+export function signin({email, password}, history) {
+    return async function (dispatch) {
+        try {
+            const user = await Auth.signIn(email, password);
+            history.push("/");
             dispatch({
-                type: SET_AUTHENTICATION,
-                payload: response
-            });
-        });
-    }
-}
-
-export function signin(auth) {
-    return function () {
-        auth.login();
+                type: SIGN_IN,
+                payload: user
+            })
+            dispatch(listUserOperations(user.attributes.sub));
+            dispatch(listUserPermanentOperations(user.attributes.sub));
+        } catch (err) {
+            console.log(err.message);
+            dispatch(parseError(err.message));
+        }
     };
 }
 
-export function signout(auth, history) {
-    return function (dispatch) {
-        history.push("/");
-        auth.logout().then(response => {
+export function signout() {
+    return async function (dispatch) {
+        try {
+            await Auth.signOut();
             dispatch({
-                type: SET_AUTHENTICATION,
-                payload: false
-            });
-        });
+                type: SIGN_OUT
+            })
+        } catch (error) {
+            console.log(error);
+        }
     }
-}
-
-export function parseError(error) {
-    return {
-        type: PARSE_ERROR,
-        payload: error
-    };
 }
 
 export function resetError() {

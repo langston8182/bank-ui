@@ -58,7 +58,7 @@ export const filteredPermanentOperation = (state) => {
 
 function getDayOfDate(date) {
     let dateParsed = new Date(date);
-    return dateParsed.getDate() + 1;
+    return dateParsed.getDate();
 }
 
 function getMonthOfDate(date) {

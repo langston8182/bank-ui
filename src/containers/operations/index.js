@@ -54,9 +54,9 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => {
     return {
+        user: state.auth.user,
         operationToModify: state.operation.operationToModify,
         permanentOperations: state.permanentOperation.permanentOperations,
-        currentUser: state.authentication.connectedUser,
         currentMonth: state.operation.currentMonth,
         filteredPermanentOperations: filteredPermanentOperation(state)
     }

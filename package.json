@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@okta/okta-react": "^1.2.0",
+    "aws-amplify": "^3.3.7",
     "axios": "^0.18.0",
     "axios-oauth-client": "^1.1.1",
     "babel-loader": "^8.0.5",

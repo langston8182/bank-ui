@@ -57,7 +57,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => {
     return {
-        currentUser: state.authentication.connectedUser,
+        currentUser: state.auth.user,
         permanentOperations: state.permanentOperation.permanentOperations,
         permanentOperationToModify: retrievePermanentOperationToModifyInForm(state)
     }
